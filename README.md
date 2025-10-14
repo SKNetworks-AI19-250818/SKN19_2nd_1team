@@ -73,6 +73,7 @@
 
 ## 📖 프로젝트 배경
 <img src="images/background.png"><br><br>
+
 ![alt text](images/news_1.jpg)
 ![alt text](images/news_2.jpg)
 
