@@ -596,6 +596,10 @@ st.markdown("---")
 if 'prediction_done' not in st.session_state:
     st.session_state.prediction_done = False
 
+# risk_score는 예측 마지막에 생성되므로, 이게 없으면 비정상 상태로 간주하고 리셋
+if 'risk_score' not in st.session_state:
+    st.session_state.prediction_done = False
+
 # 예측 버튼
 if st.button("폐업 위험도 예측하기", type="primary"):
     with st.spinner("AI가 데이터를 분석하고 있습니다..."):

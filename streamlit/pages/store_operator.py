@@ -18,46 +18,50 @@ st.set_page_config(
 # 커스텀 CSS (예비 창업자 페이지 스타일과 정렬)
 st.markdown("""
 <style>
-  .main { background-color: #f8f9fa; }
+    .main { 
+        background-color: #f8f9fa; 
+    }
 
-  .header-container {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 2rem; border-radius: 10px; margin-bottom: 2rem;
-    color: white; text-align: center;
-  }
+    .header-container {
+        background: #1e40af;
+        padding: 2rem; 
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        color: white;
+        text-align: center;
+    }
 
   /* ===== 카드 기본 스타일 ===== */
-  .stat-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    border: 1px solid #e9ecef;           /* 테두리 */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-    /* 중앙 정렬 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;                  /* 가로 중앙 */
-    justify-content: center;              /* 세로 중앙 */
-    text-align: center;
-    gap: 6px;
-    min-height: 150px;                    /* 필요 시 140~170px로 조정 */
-  }
-  .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+  
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
 
-  .stat-value {
-    font-size: 2.5rem; font-weight: bold;
-    color: #667eea; margin: 0;
-    line-height: 1.1;
-  }
-  .stat-label {
-    font-size: 1rem; color: #6c757d;
-    margin: 0; position: relative; display: inline-block;
-  }
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #667eea;
+        margin: 0.5rem 0;
+    }
+  
+    .stat-label {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+        position: relative;
+        display: inline-block;
+    }
 
+    
     .industry-card-top {
         background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
         border-left: 4px solid #2196F3;
@@ -103,48 +107,48 @@ st.markdown("""
         box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
     }
 
-  /* ===== compact 카드: 소형 버전(좌측 소형 카드용) ===== */
-  .stat-card.compact {
-    padding: 0.9rem;                      /* 소형 패딩 */
-    border-radius: 12px;
-    min-height: 120px;                    /* 소형 높이 */
-  }
-  .stat-card.compact .stat-value { font-size: 1.9rem; }
-  .stat-card.compact .stat-label { font-size: 0.95rem; }
+    /* ===== compact 카드: 소형 버전(좌측 소형 카드용) ===== */
+    .stat-card.compact {
+        padding: 0.9rem;                      /* 소형 패딩 */
+        border-radius: 12px;
+        min-height: 120px;                    /* 소형 높이 */
+    }
+    .stat-card.compact .stat-value { font-size: 1.9rem; }
+    .stat-card.compact .stat-label { font-size: 0.95rem; }
 
-  /* 툴팁 */
-  .tooltip-icon { display: inline-block; margin-left: 5px; color: #667eea; cursor: help; font-size: 0.9rem; }
-  .tooltip-icon:hover::after {
-    content: attr(data-tooltip); position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
-    background-color: #333; color: white; padding: 8px 12px; border-radius: 6px; white-space: nowrap;
-    font-size: 0.85rem; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-  .tooltip-icon:hover::before {
-    content: ''; position: absolute; left: 50%; top: -8px; transform: translateX(-50%);
-    border: 6px solid transparent; border-top-color: #333; z-index: 1000;
-  }
+    /* 툴팁 */
+    .tooltip-icon { display: inline-block; margin-left: 5px; color: #667eea; cursor: help; font-size: 0.9rem; }
+    .tooltip-icon:hover::after {
+        content: attr(data-tooltip); position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
+        background-color: #333; color: white; padding: 8px 12px; border-radius: 6px; white-space: nowrap;
+        font-size: 0.85rem; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .tooltip-icon:hover::before {
+        content: ''; position: absolute; left: 50%; top: -8px; transform: translateX(-50%);
+        border: 6px solid transparent; border-top-color: #333; z-index: 1000;
+    }
 
-  /* 정보 박스 */
-  .info-box {
-    background: white; padding: 1.5rem; border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 1.5rem;
-    border: 1px solid #e9ecef;           /* 일관된 테두리 */
-  }
+    /* 정보 박스 */
+    .info-box {
+        background: white; padding: 1.5rem; border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 1.5rem;
+        border: 1px solid #e9ecef;           /* 일관된 테두리 */
+    }
 
-  .warning-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
-  .success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
-  .danger-box  { background: #f8d7da; border-left: 4px solid #dc3545; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
+    .warning-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
+    .success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
+    .danger-box  { background: #f8d7da; border-left: 4px solid #dc3545; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
 
-  /* 버튼 */
-  .stButton>button {
-    width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;
-  }
-  .stButton>button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
-  /* compact 카드 간격 (왼쪽 세 카드만 해당) */
-  .stat-card.compact { margin: 10px 0 14px; }   /* 위/아래 여백 */
-  .stat-card.compact:last-child { margin-bottom: 0; }  /* 마지막 카드 과한 여백 제거 */
-</style>
+    /* 버튼 */
+    .stButton>button {
+        width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;
+    }
+    .stButton>button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
+    /* compact 카드 간격 (왼쪽 세 카드만 해당) */
+    .stat-card.compact { margin: 10px 0 14px; }   /* 위/아래 여백 */
+    .stat-card.compact:last-child { margin-bottom: 0; }  /* 마지막 카드 과한 여백 제거 */
+    </style>
 """, unsafe_allow_html=True)
 
 # 헤더
@@ -536,6 +540,10 @@ st.markdown("---")
 
 # ==================== Session State ====================
 if 'prediction_done' not in st.session_state:
+    st.session_state.prediction_done = False
+
+# risk_score는 예측 마지막에 생성되므로, 이게 없으면 비정상 상태로 간주하고 리셋
+if 'risk_score' not in st.session_state:
     st.session_state.prediction_done = False
 
 # ==================== 예측 버튼 ====================
@@ -961,7 +969,6 @@ if st.session_state.prediction_done:
     
 
     # =================== 매출 비교 (내 입력 vs 자치구 점포당 평균 | 천만원 단위 고정) ===================
-    st.markdown("---")
     st.markdown("### 매출 비교 (내 입력 vs 자치구 점포당 평균)")
 
     # 자치구+업종 시계열 (최신 → 과거)
