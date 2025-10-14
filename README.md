@@ -72,7 +72,8 @@
 - 정책 담당자 및 컨설턴트: 지역 상권 활성화를 위한 기초 자료로 활용 가능
 
 ## 📖 프로젝트 배경
-<img src="images/background.png"><br><br>
+<img width="1920" height="877" alt="background" src="https://github.com/user-attachments/assets/1c0bb290-f70d-4e0a-a393-d6111a9df0bb" />
+
 
 ![alt text](images/news_1.jpg)
 ![alt text](images/news_2.jpg)
