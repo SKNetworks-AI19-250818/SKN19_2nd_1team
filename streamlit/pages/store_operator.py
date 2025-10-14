@@ -237,36 +237,30 @@ with col2:
     """, unsafe_allow_html=True)
 
     prev_sales = st.number_input(
-        "이전 분기 당월 매출 (원)",
+        "당월 매출 금액(원)",
         min_value=0,
         max_value=1_000_000_000,
         value=0,
         step=10_000,
-        help="이전 분기의 한 달 매출 금액(원)을 입력하세요"
+        help="한 달 매출 금액(원)을 입력하세요"
     )
 
     prev_sales_cnt = st.number_input(
-        "이전 분기 당월 매출 건수 (건)",
+        "당월 매출 건수(건)",
         min_value=0,
         max_value=1_000_000,
         value=0,
         step=1,
-        help="이전 분기의 한 달 결제(거래) 건수를 입력하세요"
+        help="한 달 결제(거래) 건수를 입력하세요"
     )
 
     rent = st.number_input(
-        "이전 분기 임대료 (원)",
+        "임대료 (원)",
         min_value=0,
         max_value=100_000_000,
         value=3_000_000,
         step=100_000,
-        help="이전 분기의 월 임대료(원)를 입력하세요"
-    )
-
-    weekend_ratio = st.slider(
-        "주말/야간 매출 비율 (%)",
-        min_value=0, max_value=100, value=30, step=1,
-        help="당월 매출 중 주말·야간 시간대 매출이 차지하는 비율(%)"
+        help="월 임대료(원)를 입력하세요"
     )
 
 st.markdown("---")
@@ -307,19 +301,6 @@ if st.button("폐업 위험도 예측하기", type="primary"):
         if '당월_매출_건수' in input_data:
             input_data['당월_매출_건수'] = int(prev_sales_cnt)
 
-        # 3) 주말/야간 매출 비율 → 토/일 매출 금액으로 분해(50:50 가정)
-        #    (모델이 요일/시간대 매출을 직접 쓰지 않더라도 통계 카드/그래프 계산에 사용됩니다)
-        if '당월_매출_금액' in input_data and prev_sales > 0:
-            weekend_sales = int(prev_sales * (weekend_ratio / 100.0))
-            sat_sales = weekend_sales // 2
-            sun_sales = weekend_sales - sat_sales
-
-            if '토요일_매출_금액' in input_data:
-                input_data['토요일_매출_금액'] = sat_sales
-            if '일요일_매출_금액' in input_data:
-                input_data['일요일_매출_금액'] = sun_sales
-
-
         # 인코딩
         try:
             input_data['자치구_코드_명'] = district_encoder.transform([selected_district])[0]
@@ -351,6 +332,18 @@ if st.button("폐업 위험도 예측하기", type="primary"):
             st.stop()
 
         # ==================== 결과 표시 ====================
+
+        # ── 사용자 입력 기반 지표 계산 ──
+        user_sales = float(prev_sales)          # 사용자가 입력한 당월 매출 금액
+        user_cnt   = float(prev_sales_cnt)      # 사용자가 입력한 당월 매출 건수
+        user_per_tx = (user_sales / (user_cnt + 1e-6)) if user_cnt > 0 else 0.0
+
+        # 임대료 부담률: 내 입력 기준(매출=0일 땐 지역 평균으로 폴백)
+        if user_sales > 0:
+            rent_burden_user = (rent / user_sales) * 100.0
+        else:
+            base = stats['평균_매출'] if stats and stats['평균_매출'] > 0 else 0
+            rent_burden_user = (rent / base * 100.0) if base > 0 else 0.0
 
         st.markdown("### 분석 결과")
         st.markdown("---")
@@ -523,9 +516,6 @@ if st.button("폐업 위험도 예측하기", type="primary"):
             recommendations.append("🔴 **폐업 위험도가 높습니다.** 운영 전략을 재검토하거나 다른 지역/업종을 고려해보세요.")
         elif risk_score >= 40:
             recommendations.append("🟡 **폐업 위험도가 보통입니다.** 차별화된 전략이 필요합니다.")
-
-        if stats['주말_매출_비율'] > 40:
-            recommendations.append("📊 이 업종은 주말 매출 비중이 높습니다. 주말 영업 전략을 중점적으로 준비하세요.")
 
         if row_data['폐업_률'] > 5:
             recommendations.append("⚠️ 해당 지역의 폐업률이 높은 편입니다. 경쟁 환경을 신중히 분석하세요.")
