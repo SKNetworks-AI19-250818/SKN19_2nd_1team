@@ -191,7 +191,7 @@ col_card1, col_card2 = st.columns(2)
 with col_card1:    
     st.markdown(
         f"""
-        <a href="./일반용" target="_self" class="selection-card">
+        <a href="./store_operator" target="_self" class="selection-card">
             <div class="selection-image">
                 <p style='font-size: 80px;'>🏢</p>
             </div>
@@ -205,7 +205,7 @@ with col_card1:
 with col_card2:
     st.markdown(
         f"""
-        <a href="./창업용" target="_self" class="selection-card2">
+        <a href="./pre-entrepreneur" target="_self" class="selection-card2">
             <div class="selection-image">
                 <p style='font-size: 80px;'>🔭</p>
             </div>
