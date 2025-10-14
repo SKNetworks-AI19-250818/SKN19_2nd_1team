@@ -3,6 +3,26 @@ import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 
+df = pd.read_csv('./../eda/data/merged_data.csv')
+region_num = df['자치구_코드_명'].nunique()
+service_num = df['서비스_업종_코드_명'].nunique()
+q75 = df['폐업_률'].quantile(0.75)
+
+# 2025년 2분기 기준
+df_20252 = df[df['기준_년분기_코드'] == 20252]
+mean_20252 = df_20252['폐업_률'].mean().round(2)
+store_20252 = df_20252[df_20252['폐업_률'] > q75].shape[0]
+
+# 2025년 1분기 기준
+df_20251 = df[df['기준_년분기_코드'] == 20242]
+mean_20251 = df_20251['폐업_률'].mean().round(2)
+store_20251 = df_20251[df_20251['폐업_률'] > q75].shape[0]
+
+# 차이
+diff_mean = mean_20252 - mean_20251
+diff_store = store_20252 - store_20251
+
+
 # 페이지 설정
 st.set_page_config(
     page_title="서울시 자치구별 매장 폐업 예측",
@@ -99,7 +119,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 사이드바 네비게이션
-st.sidebar.title("📊 메뉴")
+st.sidebar.title("메뉴")
 st.sidebar.markdown("---")
 
 page = st.sidebar.radio(
@@ -136,40 +156,41 @@ st.markdown("---")
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="stat-card">
-        <div class="stat-label">전체 분석 매장 수</div>
-        <div class="stat-value">125,847</div>
-        <div class="stat-change positive">▲ 전분기 대비 +2,340</div>
+        <div class="stat-label">분석 업종 수</div>
+        <div class="stat-value">{service_num}</div>
+        <div class="stat-change">서울시 전체</div>
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
-    st.markdown("""
+    st.markdown(f"""
     <div class="stat-card">
-        <div class="stat-label">폐업 위험 매장</div>
-        <div class="stat-value">8,234</div>
-        <div class="stat-change negative">▲ 전분기 대비 +523</div>
+        <div class="stat-label">분석 자치구 수</div>
+        <div class="stat-value">{region_num}</div>
+        <div class="stat-change">서울시 전체</div>
     </div>
     """, unsafe_allow_html=True)
 
 with col3:
-    st.markdown("""
+    st.markdown(f"""
     <div class="stat-card">
-        <div class="stat-label">평균 폐업 위험도</div>
-        <div class="stat-value">6.5%</div>
-        <div class="stat-change positive">▼ 전분기 대비 -0.3%p</div>
+        <div class="stat-label">폐업 위험 매장</div>
+        <div class="stat-value">{store_20252}</div>
+        <div class="stat-change negative">▼ 전분기 대비 {diff_store}</div>
     </div>
     """, unsafe_allow_html=True)
 
 with col4:
-    st.markdown("""
+    st.markdown(f"""
     <div class="stat-card">
-        <div class="stat-label">분석 자치구 수</div>
-        <div class="stat-value">25</div>
-        <div class="stat-change">서울시 전체</div>
+        <div class="stat-label">평균 폐업 위험도</div>
+        <div class="stat-value">{mean_20252}%</div>
+        <div class="stat-change negative">▼ 전분기 대비 {diff_mean}%</div>
     </div>
     """, unsafe_allow_html=True)
+
 
 st.markdown("<br>", unsafe_allow_html=True)
 
