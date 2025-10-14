@@ -19,28 +19,27 @@
     </tr>
   <tr>
     <td align="center">
-      <img src="3.jpg" width="150"><br><br>
+      <img src="images/3.jpg" width="150"><br><br>
       DL (TabNet)<br>/ Streamlit
     </td>
     <td align="center">
-      <img src="1.jpg" width="150"><br><br>
+      <img src="images/1.jpg" width="150"><br><br>
       ML (LightGBM)<br>/ Streamlit
     </td>
     <td align="center">
-      <img src="2.jpg" width="150"><br><br>
+      <img src="images/2.jpg" width="150"><br><br>
       ML (XGBoost)<br>/ Streamlit
     </td>
     <td align="center">
-      <img src="4.jpg" width="150"><br><br>
+      <img src="images/4.jpg" width="150"><br><br>
       ML (RandomForest)<br>/ Streamlit
     </td>
     <td align="center">
-      <img src="5.jpg" width="150"><br><br>
+      <img src="images/5.jpg" width="150"><br><br>
       ML (CatBoost)<br>/ Readme & 발표
     </td>
   </tr>
 </table>
-
 
 # 프로젝트 개요
 
@@ -72,8 +71,8 @@
 
 ## 📖 프로젝트 배경
 
-![alt text](news_1.jpg)
-![alt text](news_2.jpg)
+![alt text](images/news_1.jpg)
+![alt text](images/news_2.jpg)
 
 서울시는 외식업, 프랜차이즈, 커피전문점 등 다양한 업종에서 폐업률이 점차 증가하고 있으며, 특히 최근 데이터에 따르면 외식업 폐업률은 약 18.99% 수준으로, 2024년 기준 전년 대비 큰 폭으로 상승했습니다.  
 
@@ -133,17 +132,65 @@ Project
 
 # 기술 스택
 
-| 분류 | 기술 |
-|:--:|:--:|
-| 협업 및 형상 관리 | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white) |
-| 개발 환경 & 언어 | ![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  |
-| 데이터 분석 | ![NumPy](https://img.shields.io/badge/Numpy-013243?style=for-the-badge&logo=numpy&logoColor=white) ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) ![imelearn](https://img.shields.io/badge/imelearn-0A74DA?style=for-the-badge&logoColor=white) |
-| 데이터 시각화 | ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=matplotlib&logoColor=white) ![Seaborn](https://img.shields.io/badge/Seaborn-4B8BBE?style=for-the-badge&logo=python&logoColor=white)  |
-| 머신 러닝 & 딥러닝 | ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white) ![XGBoost](https://img.shields.io/badge/XGBoost-BE0029?style=for-the-badge&logo=xgboost&logoColor=white) ![CatBoost](https://img.shields.io/badge/CatBoost-FFCC00?style=for-the-badge&logo=catboost&logoColor=black) ![LightGBM](https://img.shields.io/badge/LightGBM-00A0E9?style=for-the-badge&logo=lightgbm&logoColor=white) ![TabNet](https://img.shields.io/badge/TabNet-FF6F61?style=for-the-badge&logoColor=white) ![Optuna](https://img.shields.io/badge/Optuna-5A5A5A?style=for-the-badge&logoColor=white) |
-| 대시보드 | ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white) |
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:center;">분류</th>
+      <th style="text-align:center;">기술</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">협업 및 형상 관리</td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
+        <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+      </td>
+    </tr>
+    <tr>
+      <td align="center">개발 환경 & 언어</td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+        <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+      </td>
+    </tr>
+    <tr>
+      <td align="center">데이터 분석</td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/Numpy-013243?style=for-the-badge&logo=numpy&logoColor=white">
+        <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white">
+        <img src="https://img.shields.io/badge/imelearn-0A74DA?style=for-the-badge&logoColor=white">
+      </td>
+    </tr>
+    <tr>
+      <td align="center">데이터 시각화</td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=matplotlib&logoColor=white">
+        <img src="https://img.shields.io/badge/Seaborn-4B8BBE?style=for-the-badge&logo=python&logoColor=white">
+      </td>
+    </tr>
+    <tr>
+      <td align="center">머신 러닝 & 딥러닝</td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white">
+        <img src="https://img.shields.io/badge/XGBoost-BE0029?style=for-the-badge&logo=xgboost&logoColor=white">
+        <img src="https://img.shields.io/badge/CatBoost-FFCC00?style=for-the-badge&logo=catboost&logoColor=black">
+        <img src="https://img.shields.io/badge/LightGBM-00A0E9?style=for-the-badge&logo=lightgbm&logoColor=white">
+        <img src="https://img.shields.io/badge/TabNet-FF6F61?style=for-the-badge&logoColor=white">
+        <img src="https://img.shields.io/badge/Optuna-5A5A5A?style=for-the-badge&logoColor=white">
+      </td>
+    </tr>
+    <tr>
+      <td align="center">대시보드</td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 # WBS
-![alt text](image.png)
+![alt text](images/wbs.png)
 
 ### ✔️ 데이터셋 소개
 
@@ -152,14 +199,24 @@ Project
 ##### 출처 : [점포-자치구](https://data.seoul.go.kr/dataList/OA-22173/S/1/datasetView.do), [상권변화지표-자치구](https://data.seoul.go.kr/dataList/OA-15567/S/1/datasetView.do), [추정매출-자치구](https://data.seoul.go.kr/dataList/OA-22176/S/1/datasetView.do), [상주인구-자치구)](https://data.seoul.go.kr/dataList/OA-22182/S/1/datasetView.do), [길단위인구-자치구](https://data.seoul.go.kr/dataList/OA-22179/S/1/datasetView.do), [직장인구-자치구](https://data.seoul.go.kr/dataList/OA-22185/S/1/datasetView.do), [소득소비-자치구)](https://data.seoul.go.kr/dataList/OA-22167/S/1/datasetView.do), [지역별 임대시세](https://golmok.seoul.go.kr/stateArea.do)
 
 # 데이터 전처리 결과서(EDA)
+### 데이터 구조 확인
 
-## 데이터 전처리
+
+### 결측치 및 이상치 탐색
+
+### 데이터 시각화
+
+### 데이터 전처리
+
+### 피처 엔지니어링
+
+### 데이터 분할
 
 
 # 인공지능 학습 결과서
 ## Machine Learning
 ### 모델 비교 개요
-- 분류 모델을 활용하여 폐업률 이진분류
+- 폐업률 예측을 위한 이진 분류 기반 머신러닝 모델 개발
 
 - 사용 모델: 
     - RandomForest
@@ -168,9 +225,9 @@ Project
     - CatBoost 
 
 - 공통 설정:
-    - 폐업률 상위 75% 기준으로 분류
-    - Optuna를 활용한 하이퍼파라미터 튜닝
-    - Stratified Kfold로 학습 검증
+    - 폐업률 상위 75% 기준 이진 분류
+    - Optuna 기반 하이퍼파라미터 튜닝
+    - Stratified K-Fold 교차 검증 적용
 
 ### 모델별 성능 결과 비교
 
@@ -217,22 +274,66 @@ Project
   </tr>
 </table>
 
-✅ 결론 : 모델 성능 비교 결과 CatBoost 모델이 가장 적합 
+✅ 결론 : CatBoost가 가장 높은 성능을 보여 최적의 모델로 선정
 
 ### CatBoost 모델 학습 결과
-1. 혼동 행렬
+1. Confusion Matrix
+<p align="center">
+  <img src="images/cm.png" width="500">
+</p>
 
+2. ROC Curve
+<p align="center">
+  <img src="images/roc.png" width="500">
+</p>
 
+3. Precision-Recall Curve
+<p align="center">
+  <img src="images/pr.png" width="500">
+</p>
+
+4. Feature Importance (Top 30)
+<p align="center">
+  <img src="images/cb_fi.png" width="500">
+</p>
 
 ## Deep Learning
-1. TabNet
-    - Accuracy: 0.8309 (83.09%)
-    - Precision: 0.8324 (83.24%)
-    - Recall: 0.8286 (82.86%)
-    - F1 Score: 0.8305
-    - AUC: 0.9144
+### TabNet 모델 개요
+- 해당 데이터를 시계열 데이터로 판단하여 RNN 모델을 사용하려고 했으나 폐업률이 시간에 따른 추세를 보이지 않아 Tabular 데이터에 적합한 모델인 Tabnet 모델 선정
+- Optuna 기반 하이퍼파라미터 튜닝
+
+- TabNet Architecture
+<p align="center">
+  <img src="images/architecture.jpg" width="500">
+</p>
+
+### TabNet 모델 성능 결과
+- Accuracy: 0.8309 (83.09%)
+- Precision: 0.8324 (83.24%)
+- Recall: 0.8286 (82.86%)
+- F1 Score: 0.8305
+- AUC: 0.9144
+
+### Tab 모델 학습 결과
+1. Confusion Matrix
+<p align="center">
+  <img src="images/tb_cm.png" width="500">
+</p>
+
+2. ROC Curve
+<p align="center">
+  <img src="images/tb_roc.png" width="500">
+</p>
+
+3. Feature Improtance (Top 30)
+<p align="center">
+  <img src="images/tb_fi.png" width="500">
+</p>
+
 
 ## 수행 결과
+### Streamlit 
+
 ### 결론
 
 ### 기대효과 및 활용방안
