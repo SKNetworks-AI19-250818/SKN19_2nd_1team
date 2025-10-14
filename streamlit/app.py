@@ -66,7 +66,7 @@ st.markdown("""
     .stat-value {
         font-size: 2.5rem;
         font-weight: bold;
-        color: #667eea;
+        color: #1e40af;
         margin: 0.5rem 0;
     }
     
@@ -115,7 +115,8 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
-    .selection-card {
+                
+    .selection-card, .selection-card2 {
         background: white;
         padding: 30px; 
         border-radius: 10px;
@@ -125,29 +126,44 @@ st.markdown("""
         transition: all 0.3s ease;
         height: 400px; 
         border: none;
-        text-decoration: none !important; /* 링크 밑줄 제거 */
-        display: block; /* a 태그가 블록 요소가 되도록 */
+        text-decoration: none !important;
+        display: block;
     }
-    
-    .selection-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        border: none; 
-        color: black;
-        background: #fdd03b;
-    }
-    
-    .selection-card h2 {
+
+    .selection-card h2, .selection-card2 h2 {
         font-size: 2.5rem; 
         color: #212529;
         margin-top: 15px;
         margin-bottom: 10px;
     }
-    
-    .selection-card p {
-        font-size: 1.1rem;
+
+    .selection-card p, .selection-card2 p {
+        font-size: 1.5rem;
         color: #6c757d;
     }
+
+    .selection-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        background: #fdd03b;
+    }
+
+    .selection-card:hover h2,
+    .selection-card:hover p {
+        color: black;
+    }
+
+    .selection-card2:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        background: #1e40af;
+    }
+
+    .selection-card2:hover h2,
+    .selection-card2:hover p {
+        color: white;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -163,7 +179,7 @@ AI 기반 데이터 분석으로
 st.markdown("""
 <div class="header-container">
     <h1 style='margin:0; font-size: 2.5rem;'>서울시 자치구별 매장 폐업률 예측 및 솔루션 제공 서비스</h1>
-    <p style='margin-top: 1rem; font-size: 1.5rem; opacity: 0.9; font-weight: bold; color: #667eea;'>
+    <p style='margin-top: 1rem; font-size: 1.5rem; opacity: 0.9; font-weight: bold; color: #1e40af;'>
         AI 기반 데이터 분석으로 예측하는 서울시 자치구별 상권 현황
     </p>
 </div>
@@ -189,7 +205,7 @@ with col_card1:
 with col_card2:
     st.markdown(
         f"""
-        <a href="./창업용" target="_self" class="selection-card">
+        <a href="./창업용" target="_self" class="selection-card2">
             <div class="selection-image">
                 <p style='font-size: 80px;'>🔭</p>
             </div>
