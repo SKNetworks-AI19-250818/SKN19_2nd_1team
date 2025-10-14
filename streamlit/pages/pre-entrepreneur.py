@@ -21,7 +21,7 @@ st.markdown("""
     }
 
     .header-container {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #1e40af;
         padding: 2rem;
         border-radius: 10px;
         margin-bottom: 2rem;
@@ -139,6 +139,69 @@ st.markdown("""
     .stButton>button:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .industry-card-top {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 4px solid #2196F3;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.8rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .industry-card-top:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+    }
+
+    .industry-card-safe {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-left: 4px solid #4CAF50;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.8rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .industry-card-safe:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+    }
+
+    .industry-card-risky {
+        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        border-left: 4px solid #f44336;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.8rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .industry-card-risky:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+    }
+
+    .rank-badge {
+        display: inline-block;
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+    }
+
+    .industry-name {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #212121;
+        margin-bottom: 0.3rem;
+    }
+
+    .industry-stats {
+        font-size: 0.9rem;
+        color: #424242;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -371,6 +434,7 @@ def get_population_stats(row):
 
 def get_income_consumption_stats(df, district, row):
     """소득/소비 분석 - 2025년 2분기 데이터"""
+    # 2025년 2분기 기준 시각화 - 가장 최신 데이터
     # 해당 자치구의 2025년 2분기(20252) 데이터 가져오기
     district_q2_2025 = df[
         (df['자치구_코드_명'] == district) &
@@ -449,14 +513,26 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
-    rent = st.number_input(
-        "월 임대료 (원)",
+    rent_per_area = st.number_input(
+        "월 임대료 (원/3.3m²)",
         min_value=0,
-        max_value=100000000,
-        value=3000000,
-        step=100000,
-        help="예상하시는 월 임대료를 입력하세요"
+        max_value=1000000,
+        value=150000,
+        step=10000,
+        help="3.3m² 기준 월 임대료를 입력하세요"
     )
+
+    store_area = st.number_input(
+        "매장 면적 (평)",
+        min_value=1,
+        max_value=500,
+        value=10,
+        step=1,
+        help="예상하는 매장 면적(평)을 입력하세요"
+    )
+
+    # 총 임대료 계산 (1평 = 3.3m²)
+    rent = rent_per_area * store_area
 
 st.markdown("---")
 
@@ -488,8 +564,9 @@ if st.button("폐업 위험도 예측하기", type="primary"):
         # 예측용 데이터 준비
         input_data = row_data.copy()
 
-        # 사용자 입력 임대료로 교체
-        input_data['전체임대료'] = rent
+        # 사용자 입력 임대료로 교체 (3.3m² 기준으로 변환)
+        # rent = rent_per_area * store_area 이므로, 다시 3.3m² 기준으로 나눔
+        input_data['전체임대료'] = rent_per_area
 
         # 인코딩
         try:
@@ -614,16 +691,19 @@ if st.session_state.prediction_done:
 
     col1, col2, col3, col4 = st.columns(4)
 
-    # 임대료 부담률
-    expected_sales = stats['평균_매출']
-    rent_burden = (rent / expected_sales * 100) if expected_sales > 0 else 0
+    # 임대료 부담률 (점포당 평균 매출 기준)
+    # 지역 전체 매출을 점포 수로 나누어 점포당 평균 매출 계산
+    total_sales = stats['평균_매출']  # 업종 전체 매출
+    total_stores = row_data['점포_수']  # 해당 지역의 업종 점포 수
+    sales_per_store = (total_sales / total_stores) if total_stores > 0 else 0
+    rent_burden = (rent / sales_per_store * 100) if sales_per_store > 0 else 0
 
     with col1:
         st.markdown(f"""
         <div class="stat-card">
             <div class="stat-label">
                 임대료 부담률
-                <span class="tooltip-icon" data-tooltip="매출 대비 임대료 비율 (적정: 10% 이하)">ℹ️</span>
+                <span class="tooltip-icon" data-tooltip="점포당 평균 매출 대비 임대료 비율 (적정: 10% 이하)">ℹ️</span>
             </div>
             <div class="stat-value">{rent_burden:.1f}%</div>
             <div style="color: {'#dc3545' if rent_burden > 15 else '#ffc107' if rent_burden > 10 else '#28a745'};">
@@ -644,8 +724,8 @@ if st.session_state.prediction_done:
     with col3:
         st.markdown(f"""
         <div class="stat-card">
-            <div class="stat-label">지역 평균 건수</div>
-            <div class="stat-value">{stats['평균_매출건수']:,.0f}건</div>
+            <div class="stat-label">지역 평균 건수(단위: 천)</div>
+            <div class="stat-value">{stats['평균_매출건수']/1000:,.0f}건</div>
             <div style="color: #6c757d;">월 기준</div>
         </div>
         """, unsafe_allow_html=True)
@@ -759,32 +839,51 @@ if st.session_state.prediction_done:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ==================== 자치구별 비교 분석 ====================
-    st.markdown(f"### 자치구 업종 분석: {selected_district}")
+    st.markdown(f"### 자치구 업종 분석: {selected_district}",
+                help="2025년 2분기 기준")
 
     col1, col2, col3 = st.columns(3)
 
+    rank_emojis = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣']
+
     with col1:
         st.markdown("#### 매출 상위 5개 업종")
-        for idx, row in district_comp['top_sales'].iterrows():
-            st.markdown(f"**{row['서비스_업종_코드_명']}**")
-            st.markdown(f"매출: {row['당월_매출_금액']/100000000:,.1f}억원 | 폐업률: {row['폐업_률']:.1f}%")
-            st.markdown("---")
+        for rank, (idx, row) in enumerate(district_comp['top_sales'].iterrows(), 1):
+            st.markdown(f"""
+            <div class="industry-card-top">
+                <span class="rank-badge">{rank_emojis[rank-1]}</span>
+                <div class="industry-name">{row['서비스_업종_코드_명']}</div>
+                <div class="industry-stats">
+                    - 매출: {row['당월_매출_금액']/100000000:,.1f}억원 | - 폐업률: {row['폐업_률']:.1f}%
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("#### 안전한 업종 5개")
-        st.caption("폐업률 기준")
-        for idx, row in district_comp['safe_industries'].iterrows():
-            st.markdown(f"**{row['서비스_업종_코드_명']}**")
-            st.markdown(f"폐업률: {row['폐업_률']:.1f}% | 매출: {row['당월_매출_금액']/100000000:,.1f}억원")
-            st.markdown("---")
+        st.markdown("#### 안전한 업종 5개(폐업률 기준)")
+        for rank, (idx, row) in enumerate(district_comp['safe_industries'].iterrows(), 1):
+            st.markdown(f"""
+            <div class="industry-card-safe">
+                <span class="rank-badge">{rank_emojis[rank-1]}</span>
+                <div class="industry-name">{row['서비스_업종_코드_명']}</div>
+                <div class="industry-stats">
+                    📊 폐업률: {row['폐업_률']:.1f}% | 📈 매출: {row['당월_매출_금액']/100000000:,.1f}억원
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
     with col3:
-        st.markdown("#### 위험한 업종 5개")
-        st.caption("폐업률 기준")
-        for idx, row in district_comp['risky_industries'].iterrows():
-            st.markdown(f"**{row['서비스_업종_코드_명']}**")
-            st.markdown(f"폐업률: {row['폐업_률']:.1f}% | 매출: {row['당월_매출_금액']/100000000:,.1f}억원")
-            st.markdown("---")
+        st.markdown("#### 위험한 업종 5개(폐업률 기준)")
+        for rank, (idx, row) in enumerate(district_comp['risky_industries'].iterrows(), 1):
+            st.markdown(f"""
+            <div class="industry-card-risky">
+                <span class="rank-badge">{rank_emojis[rank-1]}</span>
+                <div class="industry-name">{row['서비스_업종_코드_명']}</div>
+                <div class="industry-stats">
+                    📊 폐업률: {row['폐업_률']:.1f}% | 📈 매출: {row['당월_매출_금액']/100000000:,.1f}억원
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
     st.markdown("---")
 
