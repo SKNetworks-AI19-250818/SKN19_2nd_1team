@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
 from datetime import datetime
 
 df = pd.read_csv('./../eda/data/merged_data.csv')
+
 region_num = df['자치구_코드_명'].nunique()
 service_num = df['서비스_업종_코드_명'].nunique()
 q75 = df['폐업_률'].quantile(0.75)
@@ -26,12 +26,11 @@ diff_store = store_20252 - store_20251
 # 페이지 설정
 st.set_page_config(
     page_title="서울시 자치구별 매장 폐업 예측",
-    page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# 커스텀 CSS
+# CSS
 st.markdown("""
 <style>
     /* 전체 배경 */
@@ -41,11 +40,10 @@ st.markdown("""
     
     /* 헤더 스타일 */
     .header-container {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 2rem;
         border-radius: 10px;
         margin-bottom: 2rem;
-        color: white;
+        color: black;
         text-align: center;
     }
     
@@ -57,6 +55,7 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         text-align: center;
         transition: transform 0.3s ease;
+        height: 100%;
     }
     
     .stat-card:hover {
@@ -97,8 +96,9 @@ st.markdown("""
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         margin-bottom: 1.5rem;
+        height: 300px;
     }
-    
+            
     /* 버튼 스타일 */
     .stButton>button {
         width: 100%;
@@ -115,20 +115,42 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
+    .selection-card {
+        background: white;
+        padding: 30px; 
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        cursor: pointer; 
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 400px; 
+        border: none;
+        text-decoration: none !important; /* 링크 밑줄 제거 */
+        display: block; /* a 태그가 블록 요소가 되도록 */
+    }
+    
+    .selection-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        border: none; 
+        color: black;
+        background: #fdd03b;
+    }
+    
+    .selection-card h2 {
+        font-size: 2.5rem; 
+        color: #212529;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .selection-card p {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# 사이드바 네비게이션
-st.sidebar.title("메뉴")
-st.sidebar.markdown("---")
-
-page = st.sidebar.radio(
-    "페이지 선택",
-    ["🏠 홈", "📈 페이지 2 (준비중)", "🗺️ 페이지 3 (준비중)", "📋 페이지 4 (준비중)"],
-    index=0
-)
-
-st.sidebar.markdown("---")
 st.sidebar.info("""
 **서울시 자치구별 매장 폐업 예측**
 
@@ -140,19 +162,52 @@ AI 기반 데이터 분석으로
 # 메인 헤더
 st.markdown("""
 <div class="header-container">
-    <h1 style='margin:0; font-size: 2.5rem;'>🏪 서울시 자치구별 매장 폐업 예측</h1>
-    <p style='margin-top: 1rem; font-size: 1.2rem; opacity: 0.9;'>
+    <h1 style='margin:0; font-size: 2.5rem;'>서울시 자치구별 매장 폐업률 예측 및 솔루션 제공 서비스</h1>
+    <p style='margin-top: 1rem; font-size: 1.5rem; opacity: 0.9; font-weight: bold; color: #667eea;'>
         AI 기반 데이터 분석으로 예측하는 서울시 자치구별 상권 현황
     </p>
 </div>
 """, unsafe_allow_html=True)
 
+# 페이지 이동 버튼
+col_card1, col_card2 = st.columns(2)
+
+with col_card1:    
+    st.markdown(
+        f"""
+        <a href="./일반용" target="_self" class="selection-card">
+            <div class="selection-image">
+                <p style='font-size: 80px;'>🏢</p>
+            </div>
+            <h2>매장 운영자</h2>
+            <p>폐업률 예측 및 가게 주변의 상권 분석</p>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+
+with col_card2:
+    st.markdown(
+        f"""
+        <a href="./창업용" target="_self" class="selection-card">
+            <div class="selection-image">
+                <p style='font-size: 80px;'>🔭</p>
+            </div>
+            <h2>예비 창업자</h2>
+            <p>예비 사장님들을 위한 폐업률 예측 및 전략적이고 스마트한 창업 분석</p>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+
+st.markdown("<br>", unsafe_allow_html=True)
+
 # 현재 날짜 표시
 current_date = datetime.now()
-st.markdown(f"### 📅 {current_date.year}년 {current_date.month}월 기준")
+st.markdown(f"### {current_date.year}년 {current_date.month}월 기준")
 st.markdown("---")
 
-# 주요 통계 (샘플 데이터)
+# 주요 통계
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
@@ -178,7 +233,7 @@ with col3:
     <div class="stat-card">
         <div class="stat-label">폐업 위험 매장</div>
         <div class="stat-value">{store_20252}</div>
-        <div class="stat-change negative">▼ 전분기 대비 {diff_store}</div>
+        <div class="stat-change positive">▼ 전분기 대비 {diff_store}</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -187,107 +242,39 @@ with col4:
     <div class="stat-card">
         <div class="stat-label">평균 폐업 위험도</div>
         <div class="stat-value">{mean_20252}%</div>
-        <div class="stat-change negative">▼ 전분기 대비 {diff_mean}%</div>
+        <div class="stat-change positive">▼ 전분기 대비 {diff_mean}%</div>
     </div>
     """, unsafe_allow_html=True)
 
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 메인 컨텐츠
-col_left, col_right = st.columns([2, 1])
+# 프로젝트 소개
+col_left, col_right = st.columns([3, 2])
 
 with col_left:
     st.markdown("""
     <div class="info-box">
-        <h3>🎯 프로젝트 소개</h3>
+        <h3>프로젝트 소개</h3>
         <p style='font-size: 1.1rem; line-height: 1.8; color: #495057;'>
-            본 프로젝트는 서울시 25개 자치구의 상권 데이터를 기반으로
-            <strong>머신러닝 알고리즘</strong>을 활용하여 매장의 폐업 위험도를 예측합니다.
+           본 프로젝트는 서울시의 실제 상권 데이터를 기반으로 자치구별 매장 폐업률을 예측하고, 예비 창업자 및 기존 매장 운영자에게 데이터 기반의 인사이트와 솔루션을 제공합니다.
         </p>
         <p style='font-size: 1.1rem; line-height: 1.8; color: #495057;'>
-            다양한 지표(유동인구, 매출액, 임대료, 업종 등)를 종합적으로 분석하여
-            사업자들에게 유용한 인사이트를 제공하는 것을 목표로 합니다.
+            최근 경기 침체 및 상권 변화로 인해 소상공인의 폐업 위험이 증가하고 있는 가운데, 본 프로젝트는 머신러닝 및 딥러닝 기법을 활용하여 폐업 위험을 사전에 예측하고, Streamlit 기반 대시보드를 통해 누구나 쉽게 접근할 수 있는 의사결정 지원 도구를 구축하는 것을 목표로 합니다.
         </p>
     </div>
     """, unsafe_allow_html=True)
-    
-    # 자치구별 폐업 위험도 차트 (샘플)
-    st.markdown("""
-    <div class="info-box">
-        <h3>📊 자치구별 폐업 위험도 Top 10</h3>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # 샘플 데이터
-    districts = ['중구', '종로구', '용산구', '성동구', '광진구', 
-                 '동대문구', '중랑구', '성북구', '강북구', '도봉구']
-    risk_rates = [8.5, 8.2, 7.9, 7.6, 7.3, 7.1, 6.9, 6.7, 6.5, 6.3]
-    
-    fig = go.Figure(data=[
-        go.Bar(
-            x=risk_rates,
-            y=districts,
-            orientation='h',
-            marker=dict(
-                color=risk_rates,
-                colorscale='Reds',
-                showscale=True,
-                colorbar=dict(title="위험도 (%)")
-            ),
-            text=[f'{rate}%' for rate in risk_rates],
-            textposition='auto',
-        )
-    ])
-    
-    fig.update_layout(
-        xaxis_title="폐업 위험도 (%)",
-        yaxis_title="자치구",
-        height=400,
-        margin=dict(l=0, r=0, t=30, b=0),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
 
 with col_right:
     st.markdown("""
     <div class="info-box">
-        <h3>🔍 주요 기능</h3>
+        <h3>주요 내용</h3>
         <ul style='font-size: 1rem; line-height: 2; color: #495057;'>
-            <li>자치구별 폐업 위험도 예측</li>
-            <li>업종별 생존율 분석</li>
-            <li>상권 트렌드 시각화</li>
-            <li>맞춤형 리포트 생성</li>
+            <li>서울시 자치구 및 업종별 폐업률 데이터 수집 및 분석</li>
+            <li>머신러닝과 딥러닝을 활용한 예측 모델 개발</li>
+            <li>사용자 맞춤형 폐업률 예측 및 시각화 제공</li>
+            <li>Streamlit을 통한 웹 기반 대시보드 구현</li>
         </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="info-box">
-        <h3>📈 분석 지표</h3>
-        <ul style='font-size: 1rem; line-height: 2; color: #495057;'>
-            <li>유동인구 데이터</li>
-            <li>매출액 정보</li>
-            <li>임대료 수준</li>
-            <li>업종 경쟁도</li>
-            <li>지역 경제 지표</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="info-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <h3 style="color: white;">💡 사용 가이드</h3>
-        <p style='font-size: 0.95rem; line-height: 1.8;'>
-            왼쪽 사이드바에서 원하는 페이지를 선택하여
-            다양한 분석 결과를 확인하실 수 있습니다.
-        </p>
-        <p style='font-size: 0.95rem; line-height: 1.8;'>
-            각 메뉴에서는 상세한 데이터 분석과
-            시각화 자료를 제공합니다.
-        </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -298,31 +285,27 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("""
     <div style='text-align: center; padding: 1rem;'>
-        <h4>📧 문의하기</h4>
-        <p style='color: #6c757d;'>project@example.com</p>
+        <h4>깃허브</h4>
+        <a href='https://github.com/SKNetworks-AI19-250818/SKN19_2nd_1team' target='_blank' style='color: #667eea; text-decoration: none;'>
+            SKN19_2nd_1team
+        </a>
     </div>
     """, unsafe_allow_html=True)
 
 with col2:
     st.markdown("""
     <div style='text-align: center; padding: 1rem;'>
-        <h4>📚 데이터 출처</h4>
-        <p style='color: #6c757d;'>서울시 열린데이터광장</p>
+        <h4>데이터 출처</h4>
+        <a href='https://data.seoul.go.kr/' target='_blank' style='color: #667eea; text-decoration: none;'>
+            서울시 열린데이터광장
+        </a>
     </div>
     """, unsafe_allow_html=True)
 
 with col3:
     st.markdown("""
     <div style='text-align: center; padding: 1rem;'>
-        <h4>🔄 업데이트</h4>
-        <p style='color: #6c757d;'>분기별 업데이트</p>
+        <h4>업데이트</h4>
+        <p style='color: #667eea;'>분기별 업데이트</p>
     </div>
     """, unsafe_allow_html=True)
-
-# 푸터
-st.markdown("""
-<div style='text-align: center; padding: 2rem; color: #6c757d; font-size: 0.9rem;'>
-    <p>© 2025 서울시 자치구별 매장 폐업 예측 프로젝트. All rights reserved.</p>
-    <p>본 프로젝트는 학생용 교육 목적으로 제작되었습니다.</p>
-</div>
-""", unsafe_allow_html=True)
