@@ -30,6 +30,13 @@ st.markdown("""
         color: white;
         text-align: center;
     }
+    
+    .back-button button{
+        background-color: #301BBE;
+        color: white;
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
 
   /* ===== 카드 기본 스타일 ===== */
     .stat-card {
@@ -141,15 +148,32 @@ st.markdown("""
 
     /* 버튼 */
     .stButton>button {
-        width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;
+        width: 100%;
+        background: #1e40af;
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: all 0.3s ease;
     }
-    .stButton>button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
-    /* compact 카드 간격 (왼쪽 세 카드만 해당) */
+
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
     .stat-card.compact { margin: 10px 0 14px; }   /* 위/아래 여백 */
     .stat-card.compact:last-child { margin-bottom: 0; }  /* 마지막 카드 과한 여백 제거 */
     </style>
 """, unsafe_allow_html=True)
+
+st.markdown(
+    '<div class="back-button">',
+    unsafe_allow_html=True
+)
+if st.button("Home"):
+    st.switch_page("app.py")
+st.markdown('</div', unsafe_allow_html=True)
 
 # 헤더
 st.markdown("""
@@ -161,16 +185,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 사이드바
-st.sidebar.title("메뉴")
-st.sidebar.markdown("---")
-st.sidebar.info("""
-**매장 운영자 지원 서비스**
 
-현재 운영 중이신 매장의
-예상 폐업 위험도를
-분석해드립니다!
-""")
 
 # ==================== 데이터/모델 로드 (예비 창업자 파일 구조 준용) ====================
 @st.cache_data

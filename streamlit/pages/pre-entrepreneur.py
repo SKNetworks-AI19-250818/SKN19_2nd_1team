@@ -28,6 +28,14 @@ st.markdown("""
         color: white;
         text-align: center;
     }
+    
+    .back-button button{
+        background-color: #301BBE;
+        color: white;
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+    
 
     .stat-card {
         background: white;
@@ -206,6 +214,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
+
+st.markdown(
+    '<div class="back-button">',
+    unsafe_allow_html=True
+)
+if st.button("Home"):
+    st.switch_page("app.py")
+st.markdown('</div', unsafe_allow_html=True)
+
 # 헤더
 st.markdown("""
 <div class="header-container">
@@ -216,16 +234,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 사이드바
-st.sidebar.title("메뉴")
-st.sidebar.markdown("---")
-st.sidebar.info("""
-**예비 창업자 지원 서비스**
-
-창업을 계획 중이신가요?
-AI가 예상 폐업 위험도를
-분석해드립니다!
-""")
 
 # ==================== 데이터 로드 함수 ====================
 
@@ -1251,6 +1259,8 @@ st.markdown("""
     </ul>
 </div>
 """, unsafe_allow_html=True)
+
+
 
 # 푸터
 st.markdown("""
