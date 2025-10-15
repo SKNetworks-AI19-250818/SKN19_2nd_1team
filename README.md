@@ -274,7 +274,7 @@ Project
     - Stratified K-Fold 교차 검증 적용
 
 ### 모델별 성능 결과 비교
-- 하이퍼 파라미터 튜닝 전
+- 하이퍼파라미터 튜닝 전
   <table>
     <tr>
       <th>Model</th>
@@ -318,7 +318,7 @@ Project
     </tr>
   </table>
 
-- 하이퍼 파라미터 튜닝 후
+- 하이퍼파라미터 튜닝 후
   <table>
     <tr>
       <th>Model</th>
