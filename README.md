@@ -342,7 +342,7 @@ Project
       <td><strong>0.8920 (89.20%)</strong></td>
       <td><strong>0.8652 (86.52%)</strong></td>
       <td><strong>0.8784</strong></td>
-      <td><strong>0.9497</strong></td>
+      <td><strong>0.9500</strong></td>
     </tr>
     <tr>
       <td>XGBoost</td>
