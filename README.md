@@ -399,18 +399,18 @@ Project
   <tbody>
     <tr>
       <td><strong>핵심 원리</strong></td>
-      <td>데이터를 잘 나누는 최적의 질문(경계)을 찾아 나무 구조로 학습</td>
-      <td>순차적 어텐션으로 중요한 Feature에 집중하며 단계적으로 학습 (딥러닝)</td>
+      <td> - 데이터를 잘 나누는 최적의 질문(경계)을 찾아 나무 구조로 학습</td>
+      <td> - 순차적 어텐션으로 중요한 Feature에 집중하며 단계적으로 학습 (딥러닝)</td>
     </tr>
     <tr>
       <td><strong>학습 방식</strong></td>
-      <td>미리 정해진 규칙(정보 이득 등)에 따라 데이터를 분할</td>
-      <td>경사 하강법(Gradient Descent)을 통해 전체 네트워크를 한 번에 최적화 (End-to-End Learning)</td>
+      <td> - 미리 정해진 규칙(정보 이득 등)에 따라 데이터를 분할</td>
+      <td> - 경사 하강법(Gradient Descent)을 통해 전체 네트워크를 한 번에 최적화 (End-to-End Learning)</td>
     </tr>
     <tr>
       <td><strong>Feature 처리</strong></td>
-      <td>개별 Feature를 독립적으로 처리하는 경향이 있음</td>
-      <td>여러 Feature를 동시에 고려하고 복잡한 조합을 스스로 학습</td>
+      <td> - 개별 Feature를 독립적으로 처리하는 경향이 있음</td>
+      <td> - 여러 Feature를 동시에 고려하고 복잡한 조합을 스스로 학습</td>
     </tr>
     <tr>
       <td><strong>강점</strong></td>
