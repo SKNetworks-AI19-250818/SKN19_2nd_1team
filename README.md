@@ -437,27 +437,27 @@ Project
 
 - 홈
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/08acc597-5f81-49a9-9e3c-2e375cb66691" width="500">
+  <img src="https://github.com/user-attachments/assets/08acc597-5f81-49a9-9e3c-2e375cb66691" width="1000">
 </p>
 
 - 정보 입력
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fc96f277-5765-429c-a554-a0b51bf08d09" width="500">
+  <img src="https://github.com/user-attachments/assets/fc96f277-5765-429c-a554-a0b51bf08d09" width="1000">
 </p>
 
 - 분석 결과
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a0ce95fa-a1d9-432c-8f6d-d903a1a48297" width="500">
+  <img src="https://github.com/user-attachments/assets/a0ce95fa-a1d9-432c-8f6d-d903a1a48297" width="1000">
 </p>
 
-- 분석 시각화
+- 상세 비교 분석
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/5b10491c-d2c4-41c0-8b3a-19789fafdc87" width="500">
+  <img src="https://github.com/user-attachments/assets/4d26ddb4-28a5-41d2-b0ed-ba143d19f655" width="1000">
 </p>
 
 - 사용자 맞춤 솔루션
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/9b5bf7d8-29be-4d9b-9c2c-22360ad0461c" width="500">
+  <img src="https://github.com/user-attachments/assets/9b5bf7d8-29be-4d9b-9c2c-22360ad0461c" width="1000">
 </p>
 
 ## 🧭 기대효과 및 활용방안
