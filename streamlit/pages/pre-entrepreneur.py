@@ -28,6 +28,14 @@ st.markdown("""
         color: white;
         text-align: center;
     }
+    
+    .back-button button{
+        background-color: #301BBE;
+        color: white;
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+    
 
     .stat-card {
         background: white;
@@ -127,7 +135,7 @@ st.markdown("""
 
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #1e40af;
         color: white;
         border: none;
         padding: 0.75rem;
@@ -206,6 +214,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
+
+st.markdown(
+    '<div class="back-button">',
+    unsafe_allow_html=True
+)
+if st.button("Home"):
+    st.switch_page("app.py")
+st.markdown('</div', unsafe_allow_html=True)
+
 # 헤더
 st.markdown("""
 <div class="header-container">
@@ -216,16 +234,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 사이드바
-st.sidebar.title("메뉴")
-st.sidebar.markdown("---")
-st.sidebar.info("""
-**예비 창업자 지원 서비스**
-
-창업을 계획 중이신가요?
-AI가 예상 폐업 위험도를
-분석해드립니다!
-""")
 
 # ==================== 데이터 로드 함수 ====================
 
@@ -336,20 +344,21 @@ def get_industry_comparison(df, industry, district):
         'total_districts': len(latest_data)
     }
 
+
 def get_district_comparison(df, district):
     """자치구별 비교 통계 - 해당 자치구에서 잘되는/위험한 업종"""
     district_data = df[df['자치구_코드_명'] == district]
     latest_quarter = district_data['기준_년분기_코드'].max()
     latest_data = district_data[district_data['기준_년분기_코드'] == latest_quarter]
 
-    # 매출 기준 상위 5개 업종
-    top_sales = latest_data.nlargest(5, '당월_매출_금액')[['서비스_업종_코드_명', '당월_매출_금액', '폐업_률']]
+    # 매출 기준 상위 3개 업종
+    top_sales = latest_data.nlargest(3, '당월_매출_금액')[['서비스_업종_코드_명', '당월_매출_금액', '폐업_률']]
 
-    # 폐업률 기준 하위 5개 업종 (안전한 업종)
-    safe_industries = latest_data.nsmallest(5, '폐업_률')[['서비스_업종_코드_명', '당월_매출_금액', '폐업_률']]
+    # 폐업률 기준 하위 3개 업종 (안전한 업종)
+    safe_industries = latest_data.nsmallest(3, '폐업_률')[['서비스_업종_코드_명', '당월_매출_금액', '폐업_률']]
 
-    # 폐업률 기준 상위 5개 업종 (위험한 업종)
-    risky_industries = latest_data.nlargest(5, '폐업_률')[['서비스_업종_코드_명', '당월_매출_금액', '폐업_률']]
+    # 폐업률 기준 상위 3개 업종 (위험한 업종)
+    risky_industries = latest_data.nlargest(3, '폐업_률')[['서비스_업종_코드_명', '당월_매출_금액', '폐업_률']]
 
     return {
         'top_sales': top_sales,
@@ -378,7 +387,7 @@ def get_time_series_data(df, district, industry, year):
         code_str = str(int(code))
         year = code_str[:4]
         quarter = code_str[4]
-        return f"{year}-Q{quarter}"
+        return f"{year}/{quarter}"
 
     quarters_formatted = [format_quarter(q) for q in data_year['기준_년분기_코드'].tolist()]
 
@@ -432,6 +441,17 @@ def get_population_stats(row):
         'population_ratio': population_ratio
     }
 
+def get_seoul_population_avg(df):
+    """서울시 전체 인구 평균 계산 (최신 분기 기준)"""
+    latest_quarter = df['기준_년분기_코드'].max()
+    latest_data = df[df['기준_년분기_코드'] == latest_quarter]
+
+    return {
+        'avg_flow': latest_data['총_유동인구_수'].mean(),
+        'avg_resident': latest_data['총_상주인구_수'].mean(),
+        'avg_work': latest_data['총_직장인구_수'].mean()
+    }
+
 def get_income_consumption_stats(df, district, row):
     """소득/소비 분석 - 2025년 2분기 데이터"""
     # 2025년 2분기 기준 시각화 - 가장 최신 데이터
@@ -443,7 +463,7 @@ def get_income_consumption_stats(df, district, row):
 
     if len(district_q2_2025) > 0:
         q2_row = district_q2_2025.iloc[0]
-        # 지출 데이터는 원본에서 0이 3개 추가로 붙어있어서 1000으로 나눔
+        # 지출 데이터는 원본에 비해 0이 3개 추가로 붙어있어서 1000으로 나눔
         total_spending = q2_row['지출_총_금액'] / 1000
     else:
         # 2025년 2분기 데이터가 없으면 현재 row 사용
@@ -467,6 +487,50 @@ def get_income_consumption_stats(df, district, row):
         'total_spending': total_spending,
         'spending_breakdown': spending_breakdown
     }
+
+def get_lower_rent_districts(df, industry, current_district):
+    """
+    선택한 업종에 대해 평균보다 임대료가 낮은 자치구 목록을 반환합니다.
+    """
+    # 최신 분기 데이터 필터링
+    latest_quarter = df['기준_년분기_코드'].max()
+    latest_df = df[df['기준_년분기_코드'] == latest_quarter]
+
+    # 해당 업종 데이터 필터링
+    industry_df = latest_df[latest_df['서비스_업종_코드_명'] == industry]
+
+    if industry_df.empty:
+        return []
+
+    # 업종 평균 임대료 계산
+    avg_rent = industry_df['전체임대료'].mean()
+
+    # 평균보다 낮은 임대료를 가진 자치구 찾기 (현재 자치구 제외)
+    lower_rent_df = industry_df[(industry_df['전체임대료'] < avg_rent) & (industry_df['자치구_코드_명'] != current_district)]
+
+    # 임대료가 낮은 순으로 정렬하여 상위 3개 자치구 이름 반환
+    return lower_rent_df.sort_values('전체임대료')['자치구_코드_명'].head(3).tolist()
+
+
+
+def get_main_customer_segment(row):
+    """매출이 가장 높은 연령대와 성별을 분석합니다."""
+    # 연령대별 매출 분석
+    age_sales = {
+        '10대': row.get('연령대_10_매출_금액', 0), '20대': row.get('연령대_20_매출_금액', 0),
+        '30대': row.get('연령대_30_매출_금액', 0), '40대': row.get('연령대_40_매출_금액', 0),
+        '50대': row.get('연령대_50_매출_금액', 0), '60대 이상': row.get('연령대_60_이상_매출_금액', 0)
+    }
+    main_age_group = max(age_sales, key=age_sales.get)
+
+    # 성별 매출 분석
+    gender_sales = {
+        '남성': row.get('남성_매출_금액', 0),
+        '여성': row.get('여성_매출_금액', 0)
+    }
+    main_gender = max(gender_sales, key=gender_sales.get)
+
+    return main_age_group, main_gender
 
 # ==================== 메인 화면 ====================
 
@@ -538,6 +602,10 @@ st.markdown("---")
 
 # Session State 초기화
 if 'prediction_done' not in st.session_state:
+    st.session_state.prediction_done = False
+
+# risk_score는 예측 마지막에 생성되므로, 이게 없으면 비정상 상태로 간주하고 리셋
+if 'risk_score' not in st.session_state:
     st.session_state.prediction_done = False
 
 # 예측 버튼
@@ -628,19 +696,16 @@ if st.session_state.prediction_done:
     if risk_score >= 70:
         risk_level = "높음"
         risk_color = "#dc3545"
-        risk_emoji = "🚨"
         message_class = "danger-box"
         message = "현재 입력하신 조건은 폐업 위험이 높은 편입니다. 신중한 검토가 필요합니다."
     elif risk_score >= 40:
         risk_level = "보통"
         risk_color = "#ffc107"
-        risk_emoji = "⚠️"
         message_class = "warning-box"
         message = "현재 입력하신 조건은 보통 수준의 위험도를 보이고 있습니다."
     else:
         risk_level = "낮음"
         risk_color = "#28a745"
-        risk_emoji = "✅"
         message_class = "success-box"
         message = "현재 입력하신 조건은 비교적 안정적인 편입니다."
 
@@ -649,7 +714,7 @@ if st.session_state.prediction_done:
         mode="gauge+number",
         value=risk_score,
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': f"{risk_emoji} 폐업 위험도", 'font': {'size': 24}},
+        title={'text': f"폐업 위험도", 'font': {'size': 24}},
         gauge={
             'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "darkblue"},
             'bar': {'color': risk_color},
@@ -660,12 +725,7 @@ if st.session_state.prediction_done:
                 {'range': [0, 40], 'color': '#d4edda'},
                 {'range': [40, 70], 'color': '#fff3cd'},
                 {'range': [70, 100], 'color': '#f8d7da'}
-            ],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': 70
-            }
+            ]
         }
     ))
 
@@ -681,7 +741,7 @@ if st.session_state.prediction_done:
     # 위험도 메시지
     st.markdown(f"""
     <div class="{message_class}">
-        <h3>{risk_emoji} 위험도: {risk_level} ({risk_score:.1f}점)</h3>
+        <h3>위험도: {risk_level} ({risk_score:.1f}점)</h3>
         <p style='margin:0; font-size: 1.1rem;'>{message}</p>
     </div>
     """, unsafe_allow_html=True)
@@ -707,7 +767,7 @@ if st.session_state.prediction_done:
             </div>
             <div class="stat-value">{rent_burden:.1f}%</div>
             <div style="color: {'#dc3545' if rent_burden > 15 else '#ffc107' if rent_burden > 10 else '#28a745'};">
-                {'🚨 높음' if rent_burden > 15 else '⚠️ 주의' if rent_burden > 10 else '✅ 적정'}
+                {'높음' if rent_burden > 15 else '주의' if rent_burden > 10 else '적정'}
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -715,7 +775,7 @@ if st.session_state.prediction_done:
     with col2:
         st.markdown(f"""
         <div class="stat-card">
-            <div class="stat-label">지역 평균 매출</div>
+            <div class="stat-label">지역 평균 매출(단위: 원)</div>
             <div class="stat-value">{stats['평균_매출']/100000000:,.1f}억</div>
             <div style="color: #6c757d;">월 기준</div>
         </div>
@@ -752,15 +812,20 @@ if st.session_state.prediction_done:
             go.Bar(
                 x=['주말 매출', '주중 매출'],
                 y=[stats['주말_매출_비율'], 100 - stats['주말_매출_비율']],
-                marker_color=['#667eea', '#764ba2'],
+                marker_color=['#F0067F', "#0976DD"],
                 text=[f"{stats['주말_매출_비율']:.1f}%", f"{100-stats['주말_매출_비율']:.1f}%"],
                 textposition='auto',
+                textfont=dict(
+                size=14,        # 폰트 크기
+                color='white',  # 폰트 색상
+                family='Arial'  # 폰트 종류
+                )
             )
         ])
         fig_sales.update_layout(
             title="주중/주말 매출 비율",
             yaxis_title="비율 (%)",
-            height=300,
+            height=350,
             showlegend=False
         )
         st.plotly_chart(fig_sales, use_container_width=True)
@@ -771,13 +836,18 @@ if st.session_state.prediction_done:
             go.Pie(
                 labels=['남성', '여성'],
                 values=[stats['남성_매출_비율'], stats['여성_매출_비율']],
-                marker_colors=['#667eea', '#764ba2'],
+                marker_colors=['#00A0F3', '#12DAC2'],
                 textinfo='label+percent',
+                textfont=dict(
+                size=12,        # 폰트 크기
+                color='white',  # 폰트 색상
+                family='Arial'  # 폰트 종류
+                )
             )
         ])
         fig_gender.update_layout(
             title="성별 매출 비율",
-            height=300
+            height=400
         )
         st.plotly_chart(fig_gender, use_container_width=True)
 
@@ -844,43 +914,43 @@ if st.session_state.prediction_done:
 
     col1, col2, col3 = st.columns(3)
 
-    rank_emojis = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣']
+    rank_emojis = ['🥇', '🥈', '🥉']
 
     with col1:
-        st.markdown("#### 매출 상위 5개 업종")
+        st.markdown("#### 매출 상위 3개 업종")
         for rank, (idx, row) in enumerate(district_comp['top_sales'].iterrows(), 1):
             st.markdown(f"""
             <div class="industry-card-top">
                 <span class="rank-badge">{rank_emojis[rank-1]}</span>
                 <div class="industry-name">{row['서비스_업종_코드_명']}</div>
                 <div class="industry-stats">
-                    - 매출: {row['당월_매출_금액']/100000000:,.1f}억원 | - 폐업률: {row['폐업_률']:.1f}%
+                    매출: {row['당월_매출_금액']/100000000:,.1f}억원 | 폐업률: {row['폐업_률']:.1f}%
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("#### 안전한 업종 5개(폐업률 기준)")
+        st.markdown("#### 안전한 업종 3개(폐업률 기준)")
         for rank, (idx, row) in enumerate(district_comp['safe_industries'].iterrows(), 1):
             st.markdown(f"""
             <div class="industry-card-safe">
                 <span class="rank-badge">{rank_emojis[rank-1]}</span>
                 <div class="industry-name">{row['서비스_업종_코드_명']}</div>
                 <div class="industry-stats">
-                    📊 폐업률: {row['폐업_률']:.1f}% | 📈 매출: {row['당월_매출_금액']/100000000:,.1f}억원
+                    폐업률: {row['폐업_률']:.1f}% | 매출: {row['당월_매출_금액']/100000000:,.1f}억원
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
     with col3:
-        st.markdown("#### 위험한 업종 5개(폐업률 기준)")
+        st.markdown("#### 위험한 업종 3개(폐업률 기준)")
         for rank, (idx, row) in enumerate(district_comp['risky_industries'].iterrows(), 1):
             st.markdown(f"""
             <div class="industry-card-risky">
                 <span class="rank-badge">{rank_emojis[rank-1]}</span>
                 <div class="industry-name">{row['서비스_업종_코드_명']}</div>
                 <div class="industry-stats">
-                    📊 폐업률: {row['폐업_률']:.1f}% | 📈 매출: {row['당월_매출_금액']/100000000:,.1f}억원
+                    폐업률: {row['폐업_률']:.1f}% | 매출: {row['당월_매출_금액']/100000000:,.1f}억원
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -949,15 +1019,20 @@ if st.session_state.prediction_done:
         fig_store_trend.add_trace(go.Bar(
             x=time_series['quarters'],
             y=time_series['store_count'],
-            marker_color='#764ba2',
+            marker_color='#0976DD',
             text=[f"{int(v):,}" for v in time_series['store_count']],
-            textposition='auto'
+            textposition='inside',
+            textfont=dict(
+            size=14,        # 폰트 크기
+            color='white',  # 폰트 색상
+            family='family=Arial Black, sans-serif'  # 폰트 종류
+            )
         ))
         fig_store_trend.update_layout(
             title=f"{selected_year}년 분기별 점포 수 변화",
             xaxis_title="분기",
             yaxis_title="점포 수",
-            height=300
+            height=400
         )
         st.plotly_chart(fig_store_trend, use_container_width=True)
     else:
@@ -978,7 +1053,7 @@ if st.session_state.prediction_done:
             go.Bar(
                 x=list(pop_stats['age_distribution'].keys()),
                 y=list(pop_stats['age_distribution'].values()),
-                marker_color='#667eea',
+                marker_color='#1e40af',
                 text=[f"{v:.1f}%" for v in pop_stats['age_distribution'].values()],
                 textposition='auto'
             )
@@ -997,7 +1072,7 @@ if st.session_state.prediction_done:
             go.Bar(
                 x=list(pop_stats['time_distribution'].keys()),
                 y=list(pop_stats['time_distribution'].values()),
-                marker_color='#764ba2',
+                marker_color="#1d2f81",
                 text=[f"{v:,.0f}" for v in pop_stats['time_distribution'].values()],
                 textposition='auto'
             )
@@ -1010,20 +1085,57 @@ if st.session_state.prediction_done:
         )
         st.plotly_chart(fig_time, use_container_width=True)
 
-    # 인구 구성 비율
-    fig_pop_ratio = go.Figure(data=[
-        go.Pie(
-            labels=list(pop_stats['population_ratio'].keys()),
-            values=list(pop_stats['population_ratio'].values()),
-            marker_colors=['#667eea', '#764ba2', '#ffc107'],
-            textinfo='label+percent'
-        )
-    ])
-    fig_pop_ratio.update_layout(
-        title="인구 구성 비율",
-        height=300
-    )
-    st.plotly_chart(fig_pop_ratio, use_container_width=True)
+    # 인구 구성 - 서울시 평균 대비
+    st.markdown("### 인구 구성")
+
+    # 서울시 평균 계산
+    seoul_avg = get_seoul_population_avg(merged_df)
+
+    # 현재 지역 인구
+    flow_pop = pop_stats['population_ratio']['유동인구']
+    resident_pop = pop_stats['population_ratio']['상주인구']
+    work_pop = pop_stats['population_ratio']['직장인구']
+
+    # 서울시 평균 대비 비율 계산
+    flow_vs_seoul = (flow_pop / seoul_avg['avg_flow'] * 100) if seoul_avg['avg_flow'] > 0 else 0
+    resident_vs_seoul = (resident_pop / seoul_avg['avg_resident'] * 100) if seoul_avg['avg_resident'] > 0 else 0
+    work_vs_seoul = (work_pop / seoul_avg['avg_work'] * 100) if seoul_avg['avg_work'] > 0 else 0
+
+    # 총 유동인구 큰 카드
+    st.markdown(f"""
+    <div class="stat-card" style="background: #667eea; color: white; margin-bottom: 1.5rem;">
+        <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">총 유동인구</div>
+        <div style="font-size: 3rem; font-weight: bold; margin: 1rem 0;">{flow_pop:,.0f}명</div>
+        <div style="font-size: 1.1rem;">
+            서울시 평균 대비: <strong>{flow_vs_seoul:.0f}%</strong>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 상주인구 / 직장인구 카드
+    col_pop1, col_pop2 = st.columns(2)
+
+    with col_pop1:
+        st.markdown(f"""
+        <div class="stat-card">
+            <div class="stat-label">상주인구</div>
+            <div class="stat-value">{resident_pop:,.0f}명</div>
+            <div style="font-size: 0.95rem; color: {'#28a745' if resident_vs_seoul >= 100 else '#dc3545'}; margin-top: 0.5rem;">
+                서울시 평균 대비 {resident_vs_seoul:.0f}%
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col_pop2:
+        st.markdown(f"""
+        <div class="stat-card">
+            <div class="stat-label">직장인구</div>
+            <div class="stat-value">{work_pop:,.0f}명</div>
+            <div style="font-size: 0.95rem; color: {'#28a745' if work_vs_seoul >= 100 else '#dc3545'}; margin-top: 0.5rem;">
+                서울시 평균 대비 {work_vs_seoul:.0f}%
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
 
@@ -1081,34 +1193,58 @@ if st.session_state.prediction_done:
 
     st.markdown("---")
 
-    # 권장사항
-    st.markdown("### 권장사항")
+    # Session State를 이용한 솔루션 표시/숨기기
+    if 'show_solution' not in st.session_state:
+        st.session_state.show_solution = False
 
-    recommendations = []
+    if st.button("솔루션 받기", type="primary"):
+        st.session_state.show_solution = True
 
-    if rent_burden > 15:
-        recommendations.append("🔴 **임대료 부담률이 매우 높습니다.** 더 저렴한 임대료의 매장을 찾아보시거나, 매출 증대 방안을 고려하세요.")
-    elif rent_burden > 10:
-        recommendations.append("🟡 **임대료 부담률이 다소 높은 편입니다.** 매출 증대 또는 비용 절감 방안을 준비하세요.")
-    else:
-        recommendations.append("🟢 **임대료 부담률이 적정 수준입니다.**")
+    if st.session_state.show_solution:
+        with st.container():
+            st.markdown("### 💡 AI 기반 맞춤 솔루션")
+            st.markdown("---")
 
-    if risk_score >= 70:
-        recommendations.append("🔴 **폐업 위험도가 높습니다.** 창업 계획을 재검토하거나 다른 지역/업종을 고려해보세요.")
-    elif risk_score >= 40:
-        recommendations.append("🟡 **폐업 위험도가 보통입니다.** 차별화된 전략이 필요합니다.")
+            recommendations = []
 
-    if stats['주말_매출_비율'] > 40:
-        recommendations.append("📊 이 업종은 주말 매출 비중이 높습니다. 주말 영업 전략을 중점적으로 준비하세요.")
+            if rent_burden > 10:
+                if rent_burden > 15:
+                    recommendations.append("🔴 **임대료 부담률이 매우 높습니다.** 매출 증대 방안을 적극적으로 모색하거나, 더 저렴한 임대료의 매장을 고려해보세요.")
+                else:
+                    recommendations.append("🟡 **임대료 부담률이 다소 높은 편입니다.** 매출 증대 또는 비용 절감 방안을 준비하는 것이 좋습니다.")
+                
+                alt_districts = get_lower_rent_districts(merged_df, selected_industry, selected_district)
+                if alt_districts:
+                    recommendations.append(f"💡 **대안 지역 추천:** 동일 업종의 평균 임대료가 더 낮은 **{', '.join(alt_districts)}** 지역을 고려해보는 것은 어떠신가요?")
+            else:
+                recommendations.append("🟢 **임대료 부담률이 적정 수준입니다.**")
 
-    if row_data['폐업_률'] > 5:
-        recommendations.append("⚠️ 해당 지역의 폐업률이 높은 편입니다. 경쟁 환경을 신중히 분석하세요.")
+            if risk_score >= 70:
+                recommendations.append("🔴 **폐업 위험도가 높습니다.** 창업 계획을 재검토하거나 다른 대안을 고려해보세요.")
+                safe_industries_in_district = district_comp.get('safe_industries', pd.DataFrame())
+                if not safe_industries_in_district.empty:
+                    alt_industries = safe_industries_in_district['서비스_업종_코드_명'].head(3).tolist()
+                    if alt_industries:
+                        recommendations.append(f"💡 **대안 업종 추천:** 현재 지역({selected_district})에서는 **{', '.join(alt_industries)}** 업종이 비교적 안정적입니다.")
+            elif risk_score >= 40:
+                recommendations.append("🟡 **폐업 위험도가 보통입니다.** 차별화된 전략이 필요합니다.")
+            else:
+                recommendations.append("🟢 **폐업 위험도가 안정적입니다.** 성공적인 창업을 위해 사업 계획을 구체화하세요.")
 
-    recommendations.append("📍 해당 지역의 상권 특성과 유동인구를 추가로 분석해보시기 바랍니다.")
-    recommendations.append("🤝 전문가 상담을 통해 더 정확한 사업계획을 수립하시는 것을 권장합니다.")
+            if row_data.get('폐업_률', 0) > 5:
+                recommendations.append("⚠️ **높은 경쟁 환경:** 해당 지역의 폐업률이 높은 편입니다. 경쟁에서 살아남기 위한 차별화 전략이 중요합니다.")
+                main_age, main_gender = get_main_customer_segment(row_data)
+                recommendations.append(f"🎯 **타겟 고객 집중:** 이 상권의 주 고객층은 **{main_age} {main_gender}**입니다. 이들을 타겟으로 한 메뉴 개발이나 마케팅 전략을 수립하여 충성 고객을 확보하세요.")
 
-    for i, rec in enumerate(recommendations, 1):
-        st.markdown(f"{i}. {rec}")
+            recommendations.append("📍 해당 지역의 상권 특성과 유동인구를 추가로 분석해보시기 바랍니다.")
+            recommendations.append("🤝 전문가 상담을 통해 더 정확한 사업계획을 수립하시는 것을 권장합니다.")
+
+            for i, rec in enumerate(recommendations, 1):
+                st.markdown(f"{i}. {rec}")
+
+            if st.button("닫기"):
+                st.session_state.show_solution = False
+                st.rerun()
 
 # 하단 정보
 st.markdown("---")
@@ -1123,6 +1259,8 @@ st.markdown("""
     </ul>
 </div>
 """, unsafe_allow_html=True)
+
+
 
 # 푸터
 st.markdown("""
