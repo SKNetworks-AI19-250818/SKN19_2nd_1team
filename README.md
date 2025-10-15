@@ -46,7 +46,7 @@
 # 프로젝트 개요
 
 ## 🗓️ 개발 기간
-2025.10.14 ~ 2025.10.15
+2025.09.30 ~ 2025.10.15
 
 ## 📢 프로젝트 소개
 
@@ -135,21 +135,21 @@ Project
   <tbody>
     <tr>
       <td align="center">협업 및 형상 관리</td>
-      <td align="center">
+      <td>
         <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
         <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
       </td>
     </tr>
     <tr>
       <td align="center">개발 환경 & 언어</td>
-      <td align="center">
+      <td>
         <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
         <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
       </td>
     </tr>
     <tr>
       <td align="center">데이터 분석</td>
-      <td align="center">
+      <td>
         <img src="https://img.shields.io/badge/Numpy-013243?style=for-the-badge&logo=numpy&logoColor=white">
         <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white">
         <img src="https://img.shields.io/badge/Imblearn-0A74DA?style=for-the-badge&logoColor=white">
@@ -157,14 +157,14 @@ Project
     </tr>
     <tr>
       <td align="center">데이터 시각화</td>
-      <td align="center">
+      <td>
         <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=matplotlib&logoColor=white">
         <img src="https://img.shields.io/badge/Seaborn-4B8BBE?style=for-the-badge&logo=python&logoColor=white">
       </td>
     </tr>
     <tr>
       <td align="center">머신 러닝 & 딥러닝</td>
-      <td align="center">
+      <td>
         <img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white">
         <img src="https://img.shields.io/badge/XGBoost-BE0029?style=for-the-badge&logo=xgboost&logoColor=white">
         <img src="https://img.shields.io/badge/CatBoost-FFCC00?style=for-the-badge&logo=catboost&logoColor=black">
@@ -175,7 +175,7 @@ Project
     </tr>
     <tr>
       <td align="center">대시보드</td>
-      <td align="center">
+      <td>
         <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white">
       </td>
     </tr>
@@ -274,49 +274,93 @@ Project
     - Stratified K-Fold 교차 검증 적용
 
 ### 모델별 성능 결과 비교
+- 하이퍼 파라미터 튜닝 전
+  <table>
+    <tr>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1 Score</th>
+      <th>AUC</th>
+    </tr>
+    <tr>
+      <td>RandomForest</td>
+      <td>0.8252 (82.52%)</td>
+      <td>0.8131 (81.31%)</td>
+      <td>0.8445 (84.45%)</td>
+      <td>0.8285</td>
+      <td>0.8255</td>
+    </tr>
+    <tr>
+      <td>LightGBM</td>
+      <td>0.7920 (79.20%)</td>
+      <td>0.5669 (56.69%)</td>
+      <td>0.6497 (64.97%)</td>
+      <td>0.6055</td>
+      <td>0.8362</td>
+    </tr>
+    <tr style="background-color:#DFF0D8;">
+      <td><strong>CatBoost</strong></td>
+      <td><strong>0.8650 (86.50%)</strong></td>
+      <td><strong>0.8752 (87.52%)</strong></td>
+      <td><strong>0.8514 (85.14%)</strong></td>
+      <td><strong>0.8632</strong></td>
+      <td><strong>0.9387</strong></td>
+    </tr>
+    <tr>
+      <td>XGBoost</td>
+      <td>0.8557 (85.57%)</td>
+      <td>0.8577 (85.77%)</td>
+      <td>0.8529 (85.29%)</td>
+      <td>0.8553</td>
+      <td>0.9300</td>
+    </tr>
+  </table>
 
-<table>
-  <tr>
-    <th>Model</th>
-    <th>Accuracy</th>
-    <th>Precision</th>
-    <th>Recall</th>
-    <th>F1 Score</th>
-    <th>AUC</th>
-  </tr>
-  <tr>
-    <td>RandomForest</td>
-    <td>0.8252 (82.52%)</td>
-    <td>0.8131 (81.31%)</td>
-    <td>0.8445 (84.45%)</td>
-    <td>0.8285</td>
-    <td>0.8255</td>
-  </tr>
-  <tr>
-    <td>LightGBM</td>
-    <td>0.7920 (79.20%)</td>
-    <td>0.5669 (56.69%)</td>
-    <td>0.6497 (64.97%)</td>
-    <td>0.6055</td>
-    <td>0.8362</td>
-  </tr>
-  <tr style="background-color:#DFF0D8;">
-    <td><strong>CatBoost</strong></td>
-    <td><strong>0.8802 (88.02%)</strong></td>
-    <td><strong>0.8920 (89.20%)</strong></td>
-    <td><strong>0.8652 (86.52%)</strong></td>
-    <td><strong>0.8784</strong></td>
-    <td><strong>0.9497</strong></td>
-  </tr>
-  <tr>
-    <td>XGBoost</td>
-    <td>0.8788 (87.88%)</td>
-    <td>0.8864 (88.64%)</td>
-    <td>0.8690 (86.90%)</td>
-    <td>0.8776</td>
-    <td>0.9500</td>
-  </tr>
-</table>
+- 하이퍼 파라미터 튜닝 후
+  <table>
+    <tr>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1 Score</th>
+      <th>AUC</th>
+    </tr>
+    <tr>
+      <td>RandomForest</td>
+      <td>0.8252 (82.52%)</td>
+      <td>0.8131 (81.31%)</td>
+      <td>0.8445 (84.45%)</td>
+      <td>0.8285</td>
+      <td>0.8255</td>
+    </tr>
+    <tr>
+      <td>LightGBM</td>
+      <td>0.7920 (79.20%)</td>
+      <td>0.5669 (56.69%)</td>
+      <td>0.6497 (64.97%)</td>
+      <td>0.6055</td>
+      <td>0.8362</td>
+    </tr>
+    <tr style="background-color:#DFF0D8;">
+      <td><strong>CatBoost</strong></td>
+      <td><strong>0.8802 (88.02%)</strong></td>
+      <td><strong>0.8920 (89.20%)</strong></td>
+      <td><strong>0.8652 (86.52%)</strong></td>
+      <td><strong>0.8784</strong></td>
+      <td><strong>0.9497</strong></td>
+    </tr>
+    <tr>
+      <td>XGBoost</td>
+      <td>0.8788 (87.88%)</td>
+      <td>0.8864 (88.64%)</td>
+      <td>0.8690 (86.90%)</td>
+      <td>0.8776</td>
+      <td>0.9500</td>
+    </tr>
+  </table>
 
 ✅ 결론 : CatBoost가 가장 높은 성능을 보여 최적의 모델로 선정
 
@@ -352,11 +396,33 @@ Project
 </p>
 
 ### TabNet 모델 성능 결과
-- Accuracy: 0.8309 (83.09%)
-- Precision: 0.8324 (83.24%)
-- Recall: 0.8286 (82.86%)
-- F1 Score: 0.8305
-- AUC: 0.9144
+<table>
+    <tr>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1 Score</th>
+      <th>AUC</th>
+    </tr>
+    <tr>
+      <td>하이퍼파라미터 튜닝 전</td>
+      <td>0.7408 (74.08%)</td>
+      <td>0.7171 (71.71%)</td>
+      <td>0.8095 (80.95%)</td>
+      <td>0.7605</td>
+      <td>0.8285</td>
+    </tr>
+    <tr>
+      <td>하이퍼파라미터 튜닝 후</td>
+      <td>0.8309 (83.09%)</td>
+      <td>0.8324 (83.24%)</td>
+      <td>0.8286 (82.86%)</td>
+      <td>0.8305</td>
+      <td>0.9144</td>
+    </tr>
+  </table>
+
 
 ### Tab 모델 학습 결과
 1. Confusion Matrix
