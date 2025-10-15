@@ -143,7 +143,7 @@ Project
     <tr>
       <td align="center">개발 환경 & 언어</td>
       <td align="center">
-        <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+        <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
         <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
       </td>
     </tr>
@@ -152,7 +152,7 @@ Project
       <td align="center">
         <img src="https://img.shields.io/badge/Numpy-013243?style=for-the-badge&logo=numpy&logoColor=white">
         <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white">
-        <img src="https://img.shields.io/badge/imelearn-0A74DA?style=for-the-badge&logoColor=white">
+        <img src="https://img.shields.io/badge/Imblearn-0A74DA?style=for-the-badge&logoColor=white">
       </td>
     </tr>
     <tr>
@@ -377,9 +377,36 @@ Project
 # 수행 결과
 ##  Streamlit 
 
-## 📣 결론
-
 ## 🧭 기대효과 및 활용방안
+**기대효과**
+- **소상공인 리스크 감소**
+    
+    데이터 기반 예측을 통한 상권 위험 지역 사전 파악을 통해 예비 창업자 및 점주의 리스크 감소
+    
+- **지역 경제 활성화**
+    
+    자치구별 상권 분석 결과를 활용한 정책 지원 방향을 제시하여 매장 폐업률 감소 및 지역 경제 활성화
+    
+- **맞춤형 소상공인 지원 강화**
+    
+    업종 및 지역별 폐업 위험도 분석을 통한 정책 자원 효율적 배분과 맞춤형 컨설팅 제공
+    
+
+**활용방안**
+
+- **예비 창업자 지원 도구**
+    
+    업종 및 지역별 폐업 위험도 확인을 통한 입지 선정 및 리스크 관리
+    
+    저비용의 효율적 의사결정 지원 도구 활용
+    
+- **상권 정책 및 행정 활용**
+    
+    폐업률 예측 데이터를 활용한 소상공인 지원정책 수립 및 상권 활성화 전략 마련
+    
+- **컨설팅 및 교육 자료 활용**
+    
+    공공데이터 기반 AI 분석 사례를 활용한 창업 컨설팅 및 교육 자료 제공
 
 # 회고
 
