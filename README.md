@@ -286,11 +286,11 @@ Project
     </tr>
     <tr>
       <td>LightGBM</td>
-      <td>0.7920 (79.20%)</td>
-      <td>0.5669 (56.69%)</td>
-      <td>0.6497 (64.97%)</td>
-      <td>0.6055</td>
-      <td>0.8362</td>
+      <td>0.7799 (77.99%)</td>
+      <td>0.5401 (54.01%)</td>
+      <td>0.7021 (70.21%)</td>
+      <td>0.6105</td>
+      <td>0.8368</td>
     </tr>
     <tr style="background-color:#DFF0D8;">
       <td><strong>CatBoost</strong></td>
