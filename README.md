@@ -387,6 +387,57 @@ Project
   <img src="images/architecture.jpg" width="500">
 </p>
 
+- Machine Learning vs Tabnet
+<table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 100%; text-align: center;">
+  <thead>
+    <tr style="background-color: #f2f2f2;">
+      <th style="width: 18%;">구분</th>
+      <th>🌳 트리 기반 모델 (XGBoost, LightGBM 등)</th>
+      <th>🤖 TabNet</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>핵심 원리</strong></td>
+      <td>데이터를 잘 나누는 최적의 질문(경계)을 찾아 나무 구조로 학습</td>
+      <td>순차적 어텐션으로 중요한 Feature에 집중하며 단계적으로 학습 (딥러닝)</td>
+    </tr>
+    <tr>
+      <td><strong>학습 방식</strong></td>
+      <td>미리 정해진 규칙(정보 이득 등)에 따라 데이터를 분할</td>
+      <td>경사 하강법(Gradient Descent)을 통해 전체 네트워크를 한 번에 최적화 (End-to-End Learning)</td>
+    </tr>
+    <tr>
+      <td><strong>Feature 처리</strong></td>
+      <td>개별 Feature를 독립적으로 처리하는 경향이 있음</td>
+      <td>여러 Feature를 동시에 고려하고 복잡한 조합을 스스로 학습</td>
+    </tr>
+    <tr>
+      <td><strong>강점</strong></td>
+      <td>
+        - 학습 속도가 빠르고 일반적으로 높은 성능을 보임<br>
+        - 모델의 작동 방식을 이해하기 비교적 쉬움
+      </td>
+      <td>
+        - 피처 엔지니어링 부담이 적음<br>
+        - 스트리밍 데이터처럼 계속 들어오는 데이터 학습에 유리<br>
+        - 복잡하고 미묘한 패턴 발견에 강함
+      </td>
+    </tr>
+    <tr>
+      <td><strong>단점</strong></td>
+      <td>
+        - 새로운 데이터 패턴에 대한 일반화 성능이 딥러닝보다 떨어질 수 있음<br>
+        - 피처 엔지니어링이 중요함
+      </td>
+      <td>
+        - 트리 모델보다 학습 시간이 더 오래 걸릴 수 있음<br>
+        - 대규모 데이터셋에서 더 좋은 성능을 보이는 경향이 있음
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ### TabNet 모델 성능 결과
 <table>
     <tr>
