@@ -97,6 +97,29 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         margin-bottom: 1.5rem;
         height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        word-wrap: break-word;
+        word-break: keep-all;
+    }
+
+    .info-box h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .info-box p {
+        margin-bottom: 0.8rem;
+    }
+
+    .info-box ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+
+    .info-box li {
+        margin-bottom: 0.5rem;
     }
             
     /* 버튼 스타일 */
@@ -167,13 +190,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.sidebar.info("""
-**서울시 자치구별 매장 폐업 예측**
-
-AI 기반 데이터 분석으로
-서울시 각 자치구의 매장 폐업 위험을
-예측하고 분석합니다.
-""")
 
 # 메인 헤더
 st.markdown("""

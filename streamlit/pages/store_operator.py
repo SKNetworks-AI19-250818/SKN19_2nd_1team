@@ -18,27 +18,40 @@ st.set_page_config(
 # 커스텀 CSS (예비 창업자 페이지 스타일과 정렬)
 st.markdown("""
 <style>
-    .main { 
-        background-color: #f8f9fa; 
+    .main {
+        background-color: #f8f9fa;
     }
 
     .header-container {
         background: #1e40af;
-        padding: 2rem; 
+        padding: 2rem;
         border-radius: 10px;
         margin-bottom: 2rem;
         color: white;
         text-align: center;
     }
     
-    .back-button button{
-        background-color: #301BBE;
-        color: white;
+    /* 모든 버튼 공통 스타일 */
+    .stButton>button {
+        width: 100%;
+        background: #1e40af !important;
+        color: white !important;
+        border: 2px solid transparent !important;
         padding: 0.75rem;
         border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
 
-  /* ===== 카드 기본 스타일 ===== */
+    .stButton>button:hover {
+        background-color: #ffffff !important;
+        color: #1e40af !important;
+        border: 2px solid #1e40af !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+    }
+
     .stat-card {
         background: white;
         padding: 1.5rem;
@@ -47,7 +60,7 @@ st.markdown("""
         text-align: center;
         transition: transform 0.3s ease;
     }
-  
+
     .stat-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -59,7 +72,7 @@ st.markdown("""
         color: #667eea;
         margin: 0.5rem 0;
     }
-  
+
     .stat-label {
         font-size: 1rem;
         color: #6c757d;
@@ -68,7 +81,73 @@ st.markdown("""
         display: inline-block;
     }
 
-    
+    .tooltip-icon {
+        display: inline-block;
+        margin-left: 5px;
+        color: #667eea;
+        cursor: help;
+        font-size: 0.9rem;
+    }
+
+    .tooltip-icon:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 50%;
+        top: -40px;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        white-space: nowrap;
+        font-size: 0.85rem;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .tooltip-icon:hover::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: -8px;
+        transform: translateX(-50%);
+        border: 6px solid transparent;
+        border-top-color: #333;
+        z-index: 1000;
+    }
+
+    .info-box {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .warning-box {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+    }
+
+    .success-box {
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+    }
+
+    .danger-box {
+        background: #f8d7da;
+        border-left: 4px solid #dc3545;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+    }
+
     .industry-card-top {
         background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
         border-left: 4px solid #2196F3;
@@ -114,66 +193,28 @@ st.markdown("""
         box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
     }
 
-    /* ===== compact 카드: 소형 버전(좌측 소형 카드용) ===== */
-    .stat-card.compact {
-        padding: 0.9rem;                      /* 소형 패딩 */
-        border-radius: 12px;
-        min-height: 120px;                    /* 소형 높이 */
-    }
-    .stat-card.compact .stat-value { font-size: 1.9rem; }
-    .stat-card.compact .stat-label { font-size: 0.95rem; }
-
-    /* 툴팁 */
-    .tooltip-icon { display: inline-block; margin-left: 5px; color: #667eea; cursor: help; font-size: 0.9rem; }
-    .tooltip-icon:hover::after {
-        content: attr(data-tooltip); position: absolute; left: 50%; top: -40px; transform: translateX(-50%);
-        background-color: #333; color: white; padding: 8px 12px; border-radius: 6px; white-space: nowrap;
-        font-size: 0.85rem; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    .tooltip-icon:hover::before {
-        content: ''; position: absolute; left: 50%; top: -8px; transform: translateX(-50%);
-        border: 6px solid transparent; border-top-color: #333; z-index: 1000;
+    .rank-badge {
+        display: inline-block;
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
     }
 
-    /* 정보 박스 */
-    .info-box {
-        background: white; padding: 1.5rem; border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 1.5rem;
-        border: 1px solid #e9ecef;           /* 일관된 테두리 */
-    }
-
-    .warning-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
-    .success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
-    .danger-box  { background: #f8d7da; border-left: 4px solid #dc3545; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
-
-    /* 버튼 */
-    .stButton>button {
-        width: 100%;
-        background: #1e40af;
-        color: white;
-        border: none;
-        padding: 0.75rem;
-        border-radius: 8px;
+    .industry-name {
+        font-size: 1.1rem;
         font-weight: bold;
-        transition: all 0.3s ease;
+        color: #212121;
+        margin-bottom: 0.3rem;
     }
 
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    .industry-stats {
+        font-size: 0.9rem;
+        color: #424242;
     }
-    .stat-card.compact { margin: 10px 0 14px; }   /* 위/아래 여백 */
-    .stat-card.compact:last-child { margin-bottom: 0; }  /* 마지막 카드 과한 여백 제거 */
-    </style>
+</style>
 """, unsafe_allow_html=True)
 
-st.markdown(
-    '<div class="back-button">',
-    unsafe_allow_html=True
-)
 if st.button("Home"):
     st.switch_page("app.py")
-st.markdown('</div', unsafe_allow_html=True)
 
 # 헤더
 st.markdown("""
@@ -562,7 +603,7 @@ if 'risk_score' not in st.session_state:
     st.session_state.prediction_done = False
 
 # ==================== 예측 버튼 ====================
-if st.button("폐업 위험도 예측하기", type="primary"):
+if st.button("폐업 위험도 예측하기"):
     with st.spinner("AI가 데이터를 분석하고 있습니다..."):
         model, district_encoder, industry_encoder, sanggwon_encoder, feature_names = load_model_and_encoders()
         if model is None:

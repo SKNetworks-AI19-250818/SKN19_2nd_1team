@@ -29,13 +29,26 @@ st.markdown("""
         text-align: center;
     }
     
-    .back-button button{
-        background-color: #301BBE;
-        color: white;
+    /* 모든 버튼 공통 스타일 */
+    .stButton>button {
+        width: 100%;
+        background: #1e40af !important;
+        color: white !important;
+        border: 2px solid transparent !important;
         padding: 0.75rem;
         border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
-    
+
+    .stButton>button:hover {
+        background-color: #ffffff !important;
+        color: #1e40af !important;
+        border: 2px solid #1e40af !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+    }
 
     .stat-card {
         background: white;
@@ -133,22 +146,6 @@ st.markdown("""
         margin: 1rem 0;
     }
 
-    .stButton>button {
-        width: 100%;
-        background: #1e40af;
-        color: white;
-        border: none;
-        padding: 0.75rem;
-        border-radius: 8px;
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-
     .industry-card-top {
         background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
         border-left: 4px solid #2196F3;
@@ -216,13 +213,8 @@ st.markdown("""
 
 
 
-st.markdown(
-    '<div class="back-button">',
-    unsafe_allow_html=True
-)
 if st.button("Home"):
     st.switch_page("app.py")
-st.markdown('</div', unsafe_allow_html=True)
 
 # 헤더
 st.markdown("""
@@ -609,7 +601,7 @@ if 'risk_score' not in st.session_state:
     st.session_state.prediction_done = False
 
 # 예측 버튼
-if st.button("폐업 위험도 예측하기", type="primary"):
+if st.button("폐업 위험도 예측하기"):
     with st.spinner("AI가 데이터를 분석하고 있습니다..."):
 
         # 모델 및 인코더 로드
@@ -784,8 +776,8 @@ if st.session_state.prediction_done:
     with col3:
         st.markdown(f"""
         <div class="stat-card">
-            <div class="stat-label">지역 평균 건수(단위: 천)</div>
-            <div class="stat-value">{stats['평균_매출건수']/1000:,.0f}건</div>
+            <div class="stat-label">지역 평균 건수(단위: 천 건)</div>
+            <div class="stat-value">{stats['평균_매출건수']/1000:,.0f}</div>
             <div style="color: #6c757d;">월 기준</div>
         </div>
         """, unsafe_allow_html=True)
