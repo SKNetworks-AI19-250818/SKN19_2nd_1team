@@ -7,7 +7,7 @@
 # 팀 소개
 ## 🍻 팀명
 
-창업할래 말래?
+B+(Business Planner)
 
 ## 👥 팀원 소개 및 역할
 <table>
