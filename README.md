@@ -207,7 +207,7 @@ Project
 - 폐업률 분포
 
 <p align="center">
-  <img src="images/eda2.png" width="500">
+  <img src="https://github.com/user-attachments/assets/e6e5dfc1-eb74-4336-b0a3-aa7b62aac22b" / width="500">
 </p>
 
 - 폐업률 상위 15개 업종
@@ -223,21 +223,13 @@ Project
   <img src="images/eda4.png" width="500">
 </p>
    
-- 프랜차이즈 수 별 폐업 여부(폐업률 상위 75% 기준 분류) 분포 
+- 프랜차이즈 수 별 폐업 여부(폐업률 상위 25% 기준 분류) 분포 
     - 위험 그룹(1)은 전체 데이터의 25%에 불과하지만 프랜차이즈 점포 수가 상대적으로 높음
     - 프랜차이즈 점포 수가 많을수록 폐업률이 증가하는 경향 확인
 
 <p align="center">
-  <img src="images/eda5.png" width="500">
-</p>
-
-- 10대 매출 금액
-    - 10대의 매출 비중이 높을수록 폐업률이 증가하는 경향이 있음
-    - 10대의 전체 지출 금액이 많지 않아 매출이 높아도 안정적인 수익으로 이어지지 않기 때문
-
-<p align="center">
   <img src="images/eda6.png" width="500">
-</p> 
+</p>
 
 ### 데이터 전처리
 - Drop
@@ -250,7 +242,7 @@ Project
     - 고유값이 많아 One-Hot Encoding 대신 사용, 트리 기반 모델과의 궁합 고려
 
 ### 피처 엔지니어링
-- 전체 데이터의 상위 75%를 기준으로 폐업률 등급을 분류하여 데이터 불균형 발생
+- 전체 데이터의 상위 25%를 기준으로 폐업률 등급을 분류하여 데이터 불균형 발생 (0 : 30153 / 1 : 9822)
 - SMOTE 기법을 활용해 소수 클래스 데이터를 증강하여 불균형 문제 완화
 
 ### 데이터 분할
@@ -269,12 +261,12 @@ Project
     - CatBoost 
 
 - 공통 설정:
-    - 폐업률 상위 75% 기준 이진 분류
+    - 폐업률 상위 25% 기준 이진 분류
     - Optuna 기반 하이퍼파라미터 튜닝
     - Stratified K-Fold 교차 검증 적용
 
 ### 모델별 성능 결과 비교
-- 하이퍼 파라미터 튜닝 전
+- 하이퍼파라미터 튜닝 전
   <table>
     <tr>
       <th>Model</th>
@@ -286,19 +278,19 @@ Project
     </tr>
     <tr>
       <td>RandomForest</td>
-      <td>0.8252 (82.52%)</td>
-      <td>0.8131 (81.31%)</td>
-      <td>0.8445 (84.45%)</td>
-      <td>0.8285</td>
-      <td>0.8255</td>
+      <td>0.7948 (79.48%)</td>
+      <td>0.7919 (79.19%)</td>
+      <td>0.7999 (79.99%)</td>
+      <td>0.7958</td>
+      <td>0.8681</td>
     </tr>
     <tr>
       <td>LightGBM</td>
-      <td>0.7920 (79.20%)</td>
-      <td>0.5669 (56.69%)</td>
-      <td>0.6497 (64.97%)</td>
-      <td>0.6055</td>
-      <td>0.8362</td>
+      <td>0.7799 (77.99%)</td>
+      <td>0.5401 (54.01%)</td>
+      <td>0.7021 (70.21%)</td>
+      <td>0.6105</td>
+      <td>0.8368</td>
     </tr>
     <tr style="background-color:#DFF0D8;">
       <td><strong>CatBoost</strong></td>
@@ -318,7 +310,7 @@ Project
     </tr>
   </table>
 
-- 하이퍼 파라미터 튜닝 후
+- 하이퍼파라미터 튜닝 후
   <table>
     <tr>
       <th>Model</th>
@@ -350,7 +342,7 @@ Project
       <td><strong>0.8920 (89.20%)</strong></td>
       <td><strong>0.8652 (86.52%)</strong></td>
       <td><strong>0.8784</strong></td>
-      <td><strong>0.9497</strong></td>
+      <td><strong>0.9500</strong></td>
     </tr>
     <tr>
       <td>XGBoost</td>
