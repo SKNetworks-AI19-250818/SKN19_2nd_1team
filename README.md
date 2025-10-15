@@ -231,14 +231,6 @@ Project
   <img src="images/eda6.png" width="500">
 </p>
 
-- 10대 매출 금액
-    - 10대의 매출 비중이 높을수록 폐업률이 증가하는 경향이 있음
-    - 10대의 전체 지출 금액이 많지 않아 매출이 높아도 안정적인 수익으로 이어지지 않기 때문
-
-<p align="center">
-  <img src="images/eda5.png" width="500">
-</p> 
-
 ### 데이터 전처리
 - Drop
     - 폐업 점포 수 : 정답(Target)인 폐업률과 중복 → 누설 방지를 위해 제외
