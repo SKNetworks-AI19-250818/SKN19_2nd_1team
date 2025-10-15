@@ -207,7 +207,7 @@ Project
 - 폐업률 분포
 
 <p align="center">
-  <img src="images/eda2.png" width="500">
+  <img src="https://github.com/user-attachments/assets/e6e5dfc1-eb74-4336-b0a3-aa7b62aac22b" / width="500">
 </p>
 
 - 폐업률 상위 15개 업종
@@ -242,7 +242,7 @@ Project
     - 고유값이 많아 One-Hot Encoding 대신 사용, 트리 기반 모델과의 궁합 고려
 
 ### 피처 엔지니어링
-- 전체 데이터의 상위 25%를 기준으로 폐업률 등급을 분류하여 데이터 불균형 발생
+- 전체 데이터의 상위 25%를 기준으로 폐업률 등급을 분류하여 데이터 불균형 발생 (0 : 30153 / 1 : 9822)
 - SMOTE 기법을 활용해 소수 클래스 데이터를 증강하여 불균형 문제 완화
 
 ### 데이터 분할
